@@ -9,3 +9,6 @@ The skills list it totally different and divided into three main categories; *Un
 
 ## Luck
 Luck is a new ability score.
+
+## Preview
+![preview](sheet.png)
