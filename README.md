@@ -6,3 +6,6 @@ The rules this sheet tries to follow are located here: http://dnd.rigo.nu/
 
 ## Skills
 The skills list it totally different and divided into three main categories; *Untrained*, *Knowledge* and *Practical*.
+
+## Luck
+Luck is a new ability score.

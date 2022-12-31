@@ -93,6 +93,10 @@
 									<label>Cha</label>
 									<input type="text" name="attr_charisma_base" value="10" class="sheet-text-center">
 								</div>
+								<div class="sheet-form-group">
+									<label>Lck</label>
+									<input type="text" name="attr_luck_base" value="10" class="sheet-text-center">
+								</div>
 							</div>
 						</div>
 						<div class="sheet-form-fieldset sheet-form-fieldset-npc-saves">
@@ -122,6 +126,10 @@
 									<label>Cha</label>
 									<input type="text" name="attr_npc_cha_save_base" class="sheet-text-center">
 								</div>
+								<div class="sheet-form-group">
+									<label>Lck</label>
+									<input type="text" name="attr_npc_lck_save_base" class="sheet-text-center">
+								</div>
 							</div>
 							<input type="hidden" name="attr_npc_str_save" value="@{strength_mod}">
 							<input type="hidden" name="attr_npc_dex_save" value="@{dexterity_mod}">
@@ -129,6 +137,7 @@
 							<input type="hidden" name="attr_npc_int_save" value="@{intelligence_mod}">
 							<input type="hidden" name="attr_npc_wis_save" value="@{wisdom_mod}">
 							<input type="hidden" name="attr_npc_cha_save" value="@{charisma_mod}">
+							<input type="hidden" name="attr_npc_lck_save" value="@{luck_mod}">
 						</div>
 						<div class="sheet-form-fieldset sheet-form-fieldset-npc-skills">
 							<div class="sheet-form-fieldset-header">Skills</div>
@@ -342,6 +351,7 @@
 											<option value="@{intelligence_mod}+">Intelligence</option>
 											<option value="@{wisdom_mod}+">Wisdom</option>
 											<option value="@{charisma_mod}+">Charisma</option>
+											<option value="@{luck_mod}+">Luck</option>
 										</select>
 									</div>
 									<div class="sheet-form-group">
@@ -491,6 +501,12 @@
 							<input type="hidden" name="attr_npc_cha_negative" value="0" class="sheet-value-negative">
 							<span name="attr_charisma_mod" class="sheet-btn-npc-ability-mod"></span>
 						</button>
+						<button type="roll" name="roll_npc_lck" value="@{wtype}&{template:npc} @{npc_name_flag} {{rname=Luck}} {{mod=[[[[@{luck_mod}]][LCK]]]}} {{r1=[[@{d20}+[[@{luck_mod}]][LCK]]]}} @{rtype}+[[@{luck_mod}]][LCK]]]}} {{type=Ability}}" class="sheet-btn-npc-ability">
+							<span class="sheet-btn-npc-ability-title">LCK</span>
+							<span name="attr_luck" class="sheet-btn-npc-ability-base"></span>
+							<input type="hidden" name="attr_npc_lck_negative" value="0" class="sheet-value-negative">
+							<span name="attr_luck_mod" class="sheet-btn-npc-ability-mod"></span>
+						</button>
 					</div>
 					<div class="sheet-npc-section sheet-npc-section-details">
 						<input type="hidden" name="attr_npc_saving_flag" value="" class="sheet-field-toggle">
@@ -525,6 +541,11 @@
 							<button type="roll" name="roll_npc_cha_save" value="@{wtype}&{template:npc} @{npc_name_flag} {{rname=Charisma Save}} {{mod=[[[[@{npc_cha_save}]][CHA SAVE]]]}} {{r1=[[@{d20}+[[@{npc_cha_save}]][CHA SAVE]]]}} @{rtype}+[[@{npc_cha_save}]][CHA SAVE]]]}} {{type=Save}}">
 								<span>Cha</span>
 								<span name="attr_npc_cha_save"></span>
+							</button>
+							<input type="hidden" name="attr_npc_lck_save_flag" value="0" class="sheet-field-toggle">
+							<button type="roll" name="roll_npc_lck_save" value="@{wtype}&{template:npc} @{npc_name_flag} {{rname=Luck Save}} {{mod=[[[[@{npc_lck_save}]][LCK SAVE]]]}} {{r1=[[@{d20}+[[@{npc_lck_save}]][LCK SAVE]]]}} @{rtype}+[[@{npc_lck_save}]][LCK SAVE]]]}} {{type=Save}}">
+								<span>Lck</span>
+								<span name="attr_npc_lck_save"></span>
 							</button>
 						</div>
 						<input type="hidden" name="attr_npc_skills_flag" value="" class="sheet-field-toggle">
@@ -1249,6 +1270,20 @@
 											<span name="attr_charisma"></span>
 										</div>
 									</div>
+									<div class="sheet-container-attribute">
+										<div class="sheet-container-header">
+											<button type="roll" name="roll_luck" value="@{wtype}&{template:simple} {{rname=Luck}} {{mod=@{luck_mod}@{jack_bonus}}} {{r1=[[@{d20}+@{luck_mod}@{jack_attr}[LCK]]]}} @{rtype}+@{luck_mod}@{jack_attr}[LCK]]]}} @{charname_output}">Luck</button>
+										</div>
+										<div class="sheet-container-body">
+											<span name="attr_luck_mod" title="@{luck_mod}">0</span>
+										</div>
+										<div class="sheet-container-footer">
+											<input type="text" name="attr_luck_base" title="@{luck}" value="10">
+											<input type="hidden" name="attr_luck" value="10">
+											<input type="hidden" name="attr_luck_flag" value="0" class="sheet-field-toggle">
+											<span name="attr_luck"></span>
+										</div>
+									</div>
 								</div>
 								<div class="sheet-container-bar sheet-container-bar-left sheet-pc-proficiency-bonus">
 									<div class="sheet-container-header">
@@ -1308,6 +1343,14 @@
 											</div>
 											<span name="attr_charisma_save_bonus" title="@{charisma_save_bonus}">0</span>
 											<button type="roll" name="roll_charisma_save" value="@{wtype}&{template:simple} {{rname=Charisma Save}} {{mod=@{charisma_save_bonus}}} {{r1=[[@{d20}+@{charisma_save_bonus}@{pbd_safe}]]}} @{rtype}+@{charisma_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}">Charisma</button>
+										</div>
+										<div class="sheet-pc-saving-throw">
+											<div class="sheet-checkbox-image">
+												<input type="checkbox" name="attr_luck_save_prof" title="@{luck_save_prof}" value="(@{pb})">
+												<span></span>
+											</div>
+											<span name="attr_luck_save_bonus" title="@{luck_save_bonus}">0</span>
+											<button type="roll" name="roll_luck_save" value="@{wtype}&{template:simple} {{rname=Luck Save}} {{mod=@{luck_save_bonus}}} {{r1=[[@{d20}+@{luck_save_bonus}@{pbd_safe}]]}} @{rtype}+@{luck_save_bonus}@{pbd_safe}]]}} {{global=@{global_save_mod}}} @{charname_output}">Luck</button>
 										</div>
 										<input type="hidden" name="attr_global_save_mod_flag" class="sheet-field-toggle">
 										<div class="sheet-form sheet-form-inline">
@@ -1369,6 +1412,7 @@
 												<option value="Intelligence">Int</option>
 												<option value="Wisdom">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1385,6 +1429,7 @@
 												<option value="Intelligence" selected="selected">Int</option>
 												<option value="Wisdom">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1401,6 +1446,7 @@
 												<option value="Intelligence">Int</option>
 												<option value="Wisdom">Wis</option>
 												<option value="Charisma" selected="selected">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1417,6 +1463,7 @@
 												<option value="Intelligence">Int</option>
 												<option value="Wisdom" selected="selected">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1433,6 +1480,7 @@
 												<option value="Intelligence">Int</option>
 												<option value="Wisdom" selected="selected">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1449,6 +1497,7 @@
 												<option value="Intelligence">Int</option>
 												<option value="Wisdom">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1465,6 +1514,7 @@
 												<option value="Intelligence">Int</option>
 												<option value="Wisdom" selected="selected">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1481,6 +1531,7 @@
 												<option value="Intelligence">Int</option>
 												<option value="Wisdom">Wis</option>
 												<option value="Charisma" selected="selected">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1497,6 +1548,7 @@
 												<option value="Intelligence">Int</option>
 												<option value="Wisdom">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 									</div>
@@ -1518,6 +1570,7 @@
 												<option value="Intelligence" selected="selected">Int</option>
 												<option value="Wisdom">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1534,6 +1587,7 @@
 												<option value="Intelligence" selected="selected">Int</option>
 												<option value="Wisdom">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1550,6 +1604,7 @@
 												<option value="Intelligence" selected="selected">Int</option>
 												<option value="Wisdom">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1566,6 +1621,7 @@
 												<option value="Intelligence" selected="selected">Int</option>
 												<option value="Wisdom">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1582,6 +1638,7 @@
 												<option value="Intelligence">Int</option>
 												<option value="Wisdom">Wis</option>
 												<option value="Charisma" selected="selected">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1598,6 +1655,7 @@
 												<option value="Intelligence" selected="selected">Int</option>
 												<option value="Wisdom">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1614,6 +1672,7 @@
 												<option value="Intelligence" selected="selected">Int</option>
 												<option value="Wisdom">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1630,6 +1689,7 @@
 												<option value="Intelligence" selected="selected">Int</option>
 												<option value="Wisdom">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1646,6 +1706,7 @@
 												<option value="Intelligence" selected="selected">Int</option>
 												<option value="Wisdom">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1662,6 +1723,7 @@
 												<option value="Intelligence" selected="selected">Int</option>
 												<option value="Wisdom">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1678,6 +1740,7 @@
 												<option value="Intelligence" selected="selected">Int</option>
 												<option value="Wisdom">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1694,6 +1757,7 @@
 												<option value="Intelligence" selected="selected">Int</option>
 												<option value="Wisdom">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 
@@ -1715,6 +1779,7 @@
 												<option value="Intelligence">Int</option>
 												<option value="Wisdom" selected="selected">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1731,6 +1796,7 @@
 												<option value="Intelligence">Int</option>
 												<option value="Wisdom">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1747,6 +1813,7 @@
 												<option value="Intelligence">Int</option>
 												<option value="Wisdom" selected="selected">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1763,6 +1830,7 @@
 												<option value="Intelligence">Int</option>
 												<option value="Wisdom" selected="selected">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1779,6 +1847,7 @@
 												<option value="Intelligence">Int</option>
 												<option value="Wisdom" selected="selected">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill sheet-pc-skill-sleight-of-hand">
@@ -1795,6 +1864,7 @@
 												<option value="Intelligence">Int</option>
 												<option value="Wisdom">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1811,6 +1881,7 @@
 												<option value="Intelligence">Int</option>
 												<option value="Wisdom" selected="selected">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1827,6 +1898,7 @@
 												<option value="Intelligence">Int</option>
 												<option value="Wisdom">Wis</option>
 												<option value="Charisma">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 										<div class="sheet-pc-skill">
@@ -1843,6 +1915,7 @@
 												<option value="Intelligence">Int</option>
 												<option value="Wisdom">Wis</option>
 												<option value="Charisma" selected="selected">Cha</option>
+												<option value="Luck">Lck</option>
 											</select>
 										</div>
 									</div>
@@ -1886,7 +1959,8 @@
 																	<option value="@{intelligence_mod}">Int</option>
 																	<option value="@{wisdom_mod}">Wis</option>
 																	<option value="@{charisma_mod}">Cha</option>
-																	<option value="?{Attribute?|Strength,@{strength_mod}|Dexterity,@{dexterity_mod}|Constitution,@{constitution_mod}|Intelligence,@{intelligence_mod}|Wisdom,@{wisdom_mod}|Charisma,@{charisma_mod}}">Query</option>
+																	<option value="@{luck_mod}">Lck</option>
+																	<option value="?{Attribute?|Strength,@{strength_mod}|Dexterity,@{dexterity_mod}|Constitution,@{constitution_mod}|Intelligence,@{intelligence_mod}|Wisdom,@{wisdom_mod}|Charisma,@{charisma_mod}|Luck,@{luck_mod}}">Query</option>
 																</select>
 																<label>Mods:</label>
 																<input type="text" name="attr_tool_mod" title="@{tool_mod}" value="0">
@@ -2503,6 +2577,7 @@
 											<option value="@{intelligence_mod}+">INT</option>
 											<option value="@{wisdom_mod}+">WIS</option>
 											<option value="@{charisma_mod}+">CHA</option>
+											<option value="@{luck_mod}+">LCK</option>
 										</select>
 									</div>
 								</div>
@@ -2549,6 +2624,7 @@
 									<div class="sheet-container-body">
 										<select name="attr_spell_burnout" title="@{spell_burnout}">
 											<option value=""></option>
+											<option value="d20">d20</option>
 											<option value="d12">d12</option>
 											<option value="d10">d10</option>
 											<option value="d8">d8</option>
@@ -2627,6 +2703,7 @@
 																	<option value="@{intelligence_mod}">INT</option>
 																	<option value="@{wisdom_mod}">WIS</option>
 																	<option value="@{charisma_mod}">CHA</option>
+																	<option value="@{luck_mod}">LCK</option>
 																	<option value="spell">SPELL</option>
 																	<option value="0">-</option>
 																</select>
@@ -2664,6 +2741,7 @@
 																	<option value="@{intelligence_mod}">INT</option>
 																	<option value="@{wisdom_mod}">WIS</option>
 																	<option value="@{charisma_mod}">CHA</option>
+																	<option value="@{luck_mod}">LCK</option>
 																	<option value="spell">SPELL</option>
 																	<option value="0">-</option>
 																</select>
@@ -2694,6 +2772,7 @@
 																	<option value="@{intelligence_mod}">INT</option>
 																	<option value="@{wisdom_mod}">WIS</option>
 																	<option value="@{charisma_mod}">CHA</option>
+																	<option value="@{luck_mod}">LCK</option>
 																	<option value="spell">SPELL</option>
 																	<option value="0" selected="selected">-</option>
 																</select>
@@ -2721,6 +2800,7 @@
 																	<option value="Intelligence">INT</option>
 																	<option value="Wisdom">WIS</option>
 																	<option value="Charisma">CHA</option>
+																	<option value="Luck">LCK</option>
 																</select>
 																<label>vs DC:</label>
 																<select name="attr_savedc">
@@ -2731,6 +2811,7 @@
 																	<option value="(@{intelligence_mod}+8+@{spell_dc_mod}+@{pb})">INT</option>
 																	<option value="(@{wisdom_mod}+8+@{spell_dc_mod}+@{pb})">WIS</option>
 																	<option value="(@{charisma_mod}+8+@{spell_dc_mod}+@{pb})">CHA</option>
+																	<option value="(@{luck_mod}+8+@{spell_dc_mod}+@{pb})">LCK</option>
 																	<option value="(@{saveflat})">FLAT</option>
 																</select>
 																<input type="hidden" name="attr_savedc">
@@ -3928,6 +4009,7 @@
 											<option value="@{intelligence_mod}+">INT</option>
 											<option value="@{wisdom_mod}+">WIS</option>
 											<option value="@{charisma_mod}+">CHA</option>
+											<option value="@{luck_mod}+">LCK</option>
 										</select>
 									</div>
 								</div>
@@ -4085,6 +4167,7 @@
 																	<option value="@{intelligence_mod}+">INT</option>
 																	<option value="@{wisdom_mod}+">WIS</option>
 																	<option value="@{charisma_mod}+">CHA</option>
+																	<option value="@{luck_mod}+">LCK</option>
 																</select>
 															</div>
 															<div class="sheet-form-group">
@@ -4146,6 +4229,7 @@
 																	<option value="Intelligence">INT</option>
 																	<option value="Wisdom">WIS</option>
 																	<option value="Charisma">CHA</option>
+																	<option value="Luck">LCK</option>
 																</select>
 																<label>Effect:</label>
 																<input type="text" name="attr_spellsavesuccess">
@@ -4310,6 +4394,7 @@
 																	<option value="@{intelligence_mod}+">INT</option>
 																	<option value="@{wisdom_mod}+">WIS</option>
 																	<option value="@{charisma_mod}+">CHA</option>
+																	<option value="@{luck_mod}+">LCK</option>
 																</select>
 															</div>
 															<div class="sheet-form-group">
@@ -4371,6 +4456,7 @@
 																	<option value="Intelligence">INT</option>
 																	<option value="Wisdom">WIS</option>
 																	<option value="Charisma">CHA</option>
+																	<option value="Luck">LCK</option>
 																</select>
 																<label>Effect:</label>
 																<input type="text" name="attr_spellsavesuccess">
@@ -4535,6 +4621,7 @@
 																	<option value="@{intelligence_mod}+">INT</option>
 																	<option value="@{wisdom_mod}+">WIS</option>
 																	<option value="@{charisma_mod}+">CHA</option>
+																	<option value="@{luck_mod}+">LCK</option>
 																</select>
 															</div>
 															<div class="sheet-form-group">
@@ -4596,6 +4683,7 @@
 																	<option value="Intelligence">INT</option>
 																	<option value="Wisdom">WIS</option>
 																	<option value="Charisma">CHA</option>
+																	<option value="Luck">LCK</option>
 																</select>
 																<label>Effect:</label>
 																<input type="text" name="attr_spellsavesuccess">
@@ -4760,6 +4848,7 @@
 																	<option value="@{intelligence_mod}+">INT</option>
 																	<option value="@{wisdom_mod}+">WIS</option>
 																	<option value="@{charisma_mod}+">CHA</option>
+																	<option value="@{luck_mod}+">LCK</option>
 																</select>
 															</div>
 															<div class="sheet-form-group">
@@ -4821,6 +4910,7 @@
 																	<option value="Intelligence">INT</option>
 																	<option value="Wisdom">WIS</option>
 																	<option value="Charisma">CHA</option>
+																	<option value="Luck">LCK</option>
 																</select>
 																<label>Effect:</label>
 																<input type="text" name="attr_spellsavesuccess">
@@ -4985,6 +5075,7 @@
 																	<option value="@{intelligence_mod}+">INT</option>
 																	<option value="@{wisdom_mod}+">WIS</option>
 																	<option value="@{charisma_mod}+">CHA</option>
+																	<option value="@{luck_mod}+">LCK</option>
 																</select>
 															</div>
 															<div class="sheet-form-group">
@@ -5046,6 +5137,7 @@
 																	<option value="Intelligence">INT</option>
 																	<option value="Wisdom">WIS</option>
 																	<option value="Charisma">CHA</option>
+																	<option value="Luck">LCK</option>
 																</select>
 																<label>Effect:</label>
 																<input type="text" name="attr_spellsavesuccess">
@@ -5210,6 +5302,7 @@
 																	<option value="@{intelligence_mod}+">INT</option>
 																	<option value="@{wisdom_mod}+">WIS</option>
 																	<option value="@{charisma_mod}+">CHA</option>
+																	<option value="@{luck_mod}+">LCK</option>
 																</select>
 															</div>
 															<div class="sheet-form-group">
@@ -5271,6 +5364,7 @@
 																	<option value="Intelligence">INT</option>
 																	<option value="Wisdom">WIS</option>
 																	<option value="Charisma">CHA</option>
+																	<option value="Luck">LCK</option>
 																</select>
 																<label>Effect:</label>
 																<input type="text" name="attr_spellsavesuccess">
@@ -5435,6 +5529,7 @@
 																	<option value="@{intelligence_mod}+">INT</option>
 																	<option value="@{wisdom_mod}+">WIS</option>
 																	<option value="@{charisma_mod}+">CHA</option>
+																	<option value="@{luck_mod}+">LCK</option>
 																</select>
 															</div>
 															<div class="sheet-form-group">
@@ -5496,6 +5591,7 @@
 																	<option value="Intelligence">INT</option>
 																	<option value="Wisdom">WIS</option>
 																	<option value="Charisma">CHA</option>
+																	<option value="Luck">LCK</option>
 																</select>
 																<label>Effect:</label>
 																<input type="text" name="attr_spellsavesuccess">
@@ -5660,6 +5756,7 @@
 																	<option value="@{intelligence_mod}+">INT</option>
 																	<option value="@{wisdom_mod}+">WIS</option>
 																	<option value="@{charisma_mod}+">CHA</option>
+																	<option value="@{luck_mod}+">LCK</option>
 																</select>
 															</div>
 															<div class="sheet-form-group">
@@ -5721,6 +5818,7 @@
 																	<option value="Intelligence">INT</option>
 																	<option value="Wisdom">WIS</option>
 																	<option value="Charisma">CHA</option>
+																	<option value="Luck">LCK</option>
 																</select>
 																<label>Effect:</label>
 																<input type="text" name="attr_spellsavesuccess">
@@ -5886,6 +5984,7 @@
 																		<option value="@{intelligence_mod}+">INT</option>
 																		<option value="@{wisdom_mod}+">WIS</option>
 																		<option value="@{charisma_mod}+">CHA</option>
+																		<option value="@{luck_mod}+">LCK</option>
 																	</select>
 																</div>
 																<div class="sheet-form-group">
@@ -5947,6 +6046,7 @@
 																		<option value="Intelligence">INT</option>
 																		<option value="Wisdom">WIS</option>
 																		<option value="Charisma">CHA</option>
+																		<option value="Luck">LCK</option>
 																	</select>
 																	<label>Effect:</label>
 																	<input type="text" name="attr_spellsavesuccess">
@@ -6111,6 +6211,7 @@
 																		<option value="@{intelligence_mod}+">INT</option>
 																		<option value="@{wisdom_mod}+">WIS</option>
 																		<option value="@{charisma_mod}+">CHA</option>
+																		<option value="@{luck_mod}+">LCK</option>
 																	</select>
 																</div>
 																<div class="sheet-form-group">
@@ -6172,6 +6273,7 @@
 																		<option value="Intelligence">INT</option>
 																		<option value="Wisdom">WIS</option>
 																		<option value="Charisma">CHA</option>
+																		<option value="Luck">LCK</option>
 																	</select>
 																	<label>Effect:</label>
 																	<input type="text" name="attr_spellsavesuccess">
@@ -6472,6 +6574,7 @@
 														<option value="@{intelligence_mod}+">INT</option>
 														<option value="@{wisdom_mod}+">WIS</option>
 														<option value="@{charisma_mod}+">CHA</option>
+														<option value="@{luck_mod}+">LCK</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -6520,6 +6623,12 @@
 															<label class="sheet-form-checkbox" title="@{cust_charisma_save_prof}">
 																<input type="checkbox" name="attr_cust_charisma_save_prof" value="(@{pb})">
 																<span>Charisma</span>
+															</label>
+														</div>
+														<div class="sheet-form-group">
+															<label class="sheet-form-checkbox" title="@{cust_luck_save_prof}">
+																<input type="checkbox" name="attr_cust_luck_save_prof" value="(@{pb})">
+																<span>Luck</span>
 															</label>
 														</div>
 													</div>
@@ -6739,6 +6848,10 @@
 													<input type="text" name="attr_charisma_bonus" placeholder="0" title="@{charisma_bonus}">
 												</div>
 												<div class="sheet-form-group">
+													<label>Luck Modifier:</label>
+													<input type="text" name="attr_luck_bonus" placeholder="0" title="@{luck_bonus}">
+												</div>
+												<div class="sheet-form-group">
 													<label>Initiative Modifier:</label>
 													<input type="text" name="attr_initmod" placeholder="0" title="@{initmod}">
 												</div>
@@ -6780,6 +6893,7 @@
 																<option value="Intelligence">INT</option>
 																<option value="Wisdom">WIS</option>
 																<option value="Charisma">CHA</option>
+																<option value="Luck">LCK</option>
 															</select>
 															<span>+</span>
 															<select name="attr_custom_ac_part2" title="@{custom_ac_part2}">
@@ -6790,6 +6904,7 @@
 																<option value="Intelligence">INT</option>
 																<option value="Wisdom">WIS</option>
 																<option value="Charisma">CHA</option>
+																<option value="Luck">LCK</option>
 															</select>
 														</div>
 														<div class="sheet-form-group">
@@ -6857,6 +6972,10 @@
 												<div class="sheet-form-group">
 													<label>Charisma Save Modifier:</label>
 													<input type="text" name="attr_charisma_save_mod" placeholder="0" title="@{charisma_save_mod}">
+												</div>
+												<div class="sheet-form-group">
+													<label>Luck Save Modifier:</label>
+													<input type="text" name="attr_luck_save_mod" placeholder="0" title="@{luck_save_mod}">
 												</div>
 												<div class="sheet-form-group">
 													<label>Death Save Modifier:</label>
@@ -7179,18 +7298,21 @@
 			<input type="hidden" name="attr_intelligence_mod" value="0">
 			<input type="hidden" name="attr_wisdom_mod" value="0">
 			<input type="hidden" name="attr_charisma_mod" value="0">
+			<input type="hidden" name="attr_luck_mod" value="0">
 			<input type="hidden" name="attr_strength_save_bonus" value="0">
 			<input type="hidden" name="attr_dexterity_save_bonus" value="0">
 			<input type="hidden" name="attr_constitution_save_bonus" value="0">
 			<input type="hidden" name="attr_intelligence_save_bonus" value="0">
 			<input type="hidden" name="attr_wisdom_save_bonus" value="0">
 			<input type="hidden" name="attr_charisma_save_bonus" value="0">
+			<input type="hidden" name="attr_luck_save_bonus" value="0">
 			<input type="hidden" name="attr_strength_maximum" value="20">
 			<input type="hidden" name="attr_dexterity_maximum" value="20">
 			<input type="hidden" name="attr_constitution_maximum" value="20">
 			<input type="hidden" name="attr_intelligence_maximum" value="20">
 			<input type="hidden" name="attr_wisdom_maximum" value="20">
 			<input type="hidden" name="attr_charisma_maximum" value="20">
+			<input type="hidden" name="attr_luck_maximum" value="20">
 			<input type='hidden' name='attr_acrobatics_bonus' value='0'>
 			<input type='hidden' name='attr_investigation_bonus' value='0'>
 			<input type='hidden' name='attr_leadership_bonus' value='0'>
@@ -8253,14 +8375,14 @@
 				});
 			});
 
-			['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'].forEach(attr => {
+			['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma', 'luck'].forEach(attr => {
 				on(`change:${attr}_base change:${attr}_bonus`, function() {
 					update_attr(`${attr}`);
 
 				});
 			});
 
-			['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'].forEach(attr => {
+			['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma', 'luck'].forEach(attr => {
 				on(`change:${attr}`, function() {
 					update_mod(`${attr}`);
 
@@ -8273,7 +8395,7 @@
 				});
 			});
 
-			['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'].forEach(attr => {
+			['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma', 'luck'].forEach(attr => {
 				on(`change:${attr}_mod`, function() {
 					update_save(`${attr}`);
 					update_attacks(`${attr}`);
@@ -8308,7 +8430,7 @@
 				});
 			});
 
-			['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'].forEach(attr => {
+			['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma', 'luck'].forEach(attr => {
 				on(`change:${attr}_save_prof change:${attr}_save_mod`, function(eventinfo) {
 					if (eventinfo.sourceType === "sheetworker") {
 						return;
@@ -8626,7 +8748,7 @@
 				});
 			};
 
-			on("change:class change:custom_class change:cust_classname change:cust_hitdietype change:cust_spellcasting_ability change:cust_spellslots change:cust_strength_save_prof change:cust_dexterity_save_prof change:cust_constitution_save_prof change:cust_intelligence_save_prof change:cust_wisdom_save_prof change:cust_charisma_save_prof change:subclass change:multiclass1 change:multiclass1_subclass change:multiclass2 change:multiclass2_subclass change:multiclass3 change:multiclass3_subclass", function(eventinfo) {
+			on("change:class change:custom_class change:cust_classname change:cust_hitdietype change:cust_spellcasting_ability change:cust_spellslots change:cust_strength_save_prof change:cust_dexterity_save_prof change:cust_constitution_save_prof change:cust_intelligence_save_prof change:cust_wisdom_save_prof change:cust_charisma_save_prof change:cust_luck_save_prof change:subclass change:multiclass1 change:multiclass1_subclass change:multiclass2 change:multiclass2_subclass change:multiclass3 change:multiclass3_subclass", function(eventinfo) {
 				if (eventinfo.sourceType && eventinfo.sourceType === "sheetworker") {
 					return;
 				}
@@ -8703,7 +8825,7 @@
 				update_challenge();
 			});
 
-			on("change:npc_str_save_base change:npc_dex_save_base change:npc_con_save_base change:npc_int_save_base change:npc_wis_save_base change:npc_cha_save_base", function(eventinfo) {
+			on("change:npc_str_save_base change:npc_dex_save_base change:npc_con_save_base change:npc_int_save_base change:npc_wis_save_base change:npc_cha_save_base change:npc_lck_save_base", function(eventinfo) {
 				update_npc_saves();
 			});
 
@@ -8994,6 +9116,7 @@
 				update_save("intelligence");
 				update_save("wisdom");
 				update_save("charisma");
+				update_save("luck");
 				update_save("death");
 			};
 
@@ -9003,7 +9126,7 @@
 			};
 
 			var update_skills = function(skills_array) {
-				var attrs_to_get = ["pb", "pb_type", "jack_of_all_trades", "jack", "strength_mod", "dexterity_mod", "constitution_mod", "intelligence_mod", "wisdom_mod", "charisma_mod"];
+				var attrs_to_get = ["pb", "pb_type", "jack_of_all_trades", "jack", "strength_mod", "dexterity_mod", "constitution_mod", "intelligence_mod", "wisdom_mod", "charisma_mod", "luck_mod"];
 				var update = {};
 				var callbacks = [];
 
@@ -9117,7 +9240,7 @@
 			};
 
 			var do_update_tool = function(tool_array) {
-				var tool_attribs = ["pb", "pb_type", "jack", "strength_mod", "dexterity_mod", "constitution_mod", "intelligence_mod", "wisdom_mod", "charisma_mod"];
+				var tool_attribs = ["pb", "pb_type", "jack", "strength_mod", "dexterity_mod", "constitution_mod", "intelligence_mod", "wisdom_mod", "charisma_mod", "luck_mod"];
 				var update = {};
 				_.each(tool_array, function(tool_id) {
 					tool_attribs.push("repeating_tool_" + tool_id + "_toolbonus_base");
@@ -9131,7 +9254,7 @@
 						var query = false;
 						if (v["repeating_tool_" + tool_id + "_toolattr_base"] && v["repeating_tool_" + tool_id + "_toolattr_base"].substring(0, 2) === "?{") {
 							update["repeating_tool_" + tool_id + "_toolattr"] = "QUERY";
-							var mod = "?{Attribute?|Strength,@{strength_mod}|Dexterity,@{dexterity_mod}|Constitution,@{constitution_mod}|Intelligence,@{intelligence_mod}|Wisdom,@{wisdom_mod}|Charisma,@{charisma_mod}}";
+							var mod = "?{Attribute?|Strength,@{strength_mod}|Dexterity,@{dexterity_mod}|Constitution,@{constitution_mod}|Intelligence,@{intelligence_mod}|Wisdom,@{wisdom_mod}|Charisma,@{charisma_mod}|Luck,@{luck_mod}}";
 							if (v["repeating_tool_" + tool_id + "_tool_mod"]) {
 								mod = mod + "+" + v["repeating_tool_" + tool_id + "_tool_mod"];
 							}
@@ -9313,7 +9436,7 @@
 
 			var handle_drop = function(category, eventinfo) {
 
-				getAttrs(["speed", "drop_name", "drop_data", "drop_content", "character_id", "npc_legendary_actions", "strength_mod", "dexterity_mod", "npc", "base_level", "strength_base", "dexterity_base", "constitution_base", "wisdom_base", "intelligence_base", "charisma_base", "class_resource_name", "other_resource_name", "multiclass1_lvl", "multiclass2_lvl", "multiclass3_lvl"], function(v) {
+				getAttrs(["speed", "drop_name", "drop_data", "drop_content", "character_id", "npc_legendary_actions", "strength_mod", "dexterity_mod", "npc", "base_level", "strength_base", "dexterity_base", "constitution_base", "wisdom_base", "intelligence_base", "charisma_base", "luck_base", "class_resource_name", "other_resource_name", "multiclass1_lvl", "multiclass2_lvl", "multiclass3_lvl"], function(v) {
 					var pagedata = {};
 					try {
 						pagedata = JSON.parse(v.drop_data);
@@ -9379,6 +9502,9 @@
 							case "CHA":
 								finalAttrib = "@{charisma_mod}";
 								break;
+							case "LCK":
+								finalAttrib = "@{luck_mod}";
+								break;
 						}
 					}
 					return finalAttrib;
@@ -9394,7 +9520,7 @@
 					return uses_string === "" || uses_string === "-" ? uses_string : total;
 				};
 				var parseValues = function(uses_string) {
-					var attribs = ["strength", "dexterity", "constitution", "wisdom", "intelligence", "charisma"];
+					var attribs = ["strength", "dexterity", "constitution", "wisdom", "intelligence", "charisma", "luck"];
 					uses_string = uses_string ? uses_string.toLowerCase() : "";
 					_.each(attribs, function(attrib) {
 						var attribMod = Math.floor((parseInt(currentData[attrib + "_base"]) - 10) / 2);
@@ -9757,6 +9883,7 @@
 					update["intelligence_base"] = page.data["INT"] ? page.data["INT"] : "";
 					update["wisdom_base"] = page.data["WIS"] ? page.data["WIS"] : "";
 					update["charisma_base"] = page.data["CHA"] ? page.data["CHA"] : "";
+					update["luck_base"] = page.data["LCK"] ? page.data["LCK"] : "";
 					callbacks.push(function() {
 						update_attr("strength");
 					});
@@ -9774,6 +9901,9 @@
 					});
 					callbacks.push(function() {
 						update_attr("charisma");
+					});
+					callbacks.push(function() {
+						update_attr("luck");
 					});
 					update["npc_vulnerabilities"] = page.data["Vulnerabilities"] ? page.data["Vulnerabilities"] : "";
 					update["npc_resistances"] = page.data["Resistances"] ? page.data["Resistances"] : "";
@@ -9855,6 +9985,7 @@
 					update["npc_int_save_base"] = "";
 					update["npc_wis_save_base"] = "";
 					update["npc_cha_save_base"] = "";
+					update["npc_lck_save_base"] = "";
 					if (page.data["Saving Throws"] && page.data["Saving Throws"] != "") {
 						var savearray = page.data["Saving Throws"].split(", ");
 						_.each(savearray, function(save) {
@@ -10305,7 +10436,7 @@
 							toolname: page.name.toLowerCase()
 						}
 						update["repeating_tool_" + newrowid + "_toolname"] = page.name;
-						if (!existing.base) update["repeating_tool_" + newrowid + "_toolattr_base"] = "?{Attribute?|Strength,@{strength_mod}|Dexterity,@{dexterity_mod}|Constitution,@{constitution_mod}|Intelligence,@{intelligence_mod}|Wisdom,@{wisdom_mod}|Charisma,@{charisma_mod}}";
+						if (!existing.base) update["repeating_tool_" + newrowid + "_toolattr_base"] = "?{Attribute?|Strength,@{strength_mod}|Dexterity,@{dexterity_mod}|Constitution,@{constitution_mod}|Intelligence,@{intelligence_mod}|Wisdom,@{wisdom_mod}|Charisma,@{charisma_mod}|Luck,@{luck_mod}}";
 						update["repeating_tool_" + newrowid + "_options-flag"] = 0;
 						if (page.data["toolbonus_base"]) update["repeating_tool_" + newrowid + "_toolbonus_base"] = "(@{pb}*2)";
 						repeating.prof_names.push(page.name.toLowerCase());
@@ -10519,7 +10650,7 @@
 										toolname: prof.toLowerCase()
 									}
 									update["repeating_tool_" + newrowid + "_toolname"] = prof;
-									if (!existing.base) update["repeating_tool_" + newrowid + "_toolattr_base"] = "?{Attribute?|Strength,@{strength_mod}|Dexterity,@{dexterity_mod}|Constitution,@{constitution_mod}|Intelligence,@{intelligence_mod}|Wisdom,@{wisdom_mod}|Charisma,@{charisma_mod}}";
+									if (!existing.base) update["repeating_tool_" + newrowid + "_toolattr_base"] = "?{Attribute?|Strength,@{strength_mod}|Dexterity,@{dexterity_mod}|Constitution,@{constitution_mod}|Intelligence,@{intelligence_mod}|Wisdom,@{wisdom_mod}|Charisma,@{charisma_mod}|Luck,@{luck_mod}}";
 									update["repeating_tool_" + newrowid + "_options-flag"] = 0;
 									repeating.prof_names.push(page.name.toLowerCase());
 									callbacks.push(function() {
@@ -10921,6 +11052,11 @@
 						update_save("charisma");
 					} else if (mod.indexOf("charisma") > -1) {
 						update_attr("charisma");
+					};
+					if (mod.indexOf("luck save") > -1) {
+						update_save("luck");
+					} else if (mod.indexOf("luck") > -1) {
+						update_attr("luck");
 					};
 					if (mod.indexOf("ability checks") > -1) {
 						update_all_ability_checks();
@@ -11429,7 +11565,7 @@
 				console.log("DOING UPDATE_ATTACKS: " + update_id);
 				if (update_id.substring(0, 1) === "-" && update_id.length === 20) {
 					do_update_attack([update_id], source);
-				} else if (["strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma", "spells", "all"].indexOf(update_id) > -1) {
+				} else if (["strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma", "luck", "spells", "all"].indexOf(update_id) > -1) {
 					getSectionIDs("repeating_attack", function(idarray) {
 						if (update_id === "all") {
 							do_update_attack(idarray);
@@ -11479,7 +11615,7 @@
 			};
 
 			var do_update_attack = function(attack_array, source) {
-				var attack_attribs = ["level", "d20", "pb", "pb_type", "pbd_safe", "dtype", "globalmagicmod", "strength_mod", "dexterity_mod", "constitution_mod", "intelligence_mod", "wisdom_mod", "charisma_mod", "spellcasting_ability", "spell_save_dc", "spell_attack_mod", "spell_dc_mod", "global_damage_mod_roll", "global_damage_mod_crit"];
+				var attack_attribs = ["level", "d20", "pb", "pb_type", "pbd_safe", "dtype", "globalmagicmod", "strength_mod", "dexterity_mod", "constitution_mod", "intelligence_mod", "wisdom_mod", "charisma_mod", "luck_mod", "spellcasting_ability", "spell_save_dc", "spell_attack_mod", "spell_dc_mod", "global_damage_mod_roll", "global_damage_mod_crit"];
 				_.each(attack_array, function(attackid) {
 					attack_attribs.push("repeating_attack_" + attackid + "_atkflag");
 					attack_attribs.push("repeating_attack_" + attackid + "_atkname");
@@ -12184,7 +12320,7 @@
 						return;
 					} else {
 						var update = {};
-						var ac_attrs = ["simpleinventory", "custom_ac_base", "custom_ac_part1", "custom_ac_part2", "strength_mod", "dexterity_mod", "constitution_mod", "intelligence_mod", "wisdom_mod", "charisma_mod", "custom_ac_shield"];
+						var ac_attrs = ["simpleinventory", "custom_ac_base", "custom_ac_part1", "custom_ac_part2", "strength_mod", "dexterity_mod", "constitution_mod", "intelligence_mod", "wisdom_mod", "charisma_mod", "luck_mod", "custom_ac_shield"];
 						getSectionIDs("repeating_acmod", function(acidarray) {
 							_.each(acidarray, function(currentID, i) {
 								ac_attrs.push("repeating_acmod_" + currentID + "_global_ac_val");
@@ -12361,7 +12497,7 @@
 			};
 
 			var update_class = function() {
-				getAttrs(["class", "base_level", "custom_class", "cust_classname", "cust_hitdietype", "cust_spellcasting_ability", "cust_strength_save_prof", "cust_dexterity_save_prof", "cust_constitution_save_prof", "cust_intelligence_save_prof", "cust_wisdom_save_prof", "cust_charisma_save_prof", "strength_save_prof", "dexterity_save_prof", "constitution_save_prof", "intelligence_save_prof", "wisdom_save_prof", "charisma_save_prof", "subclass", "multiclass1", "multiclass1_subclass", "multiclass2", "multiclass2_subclass", "multiclass3", "multiclass3_subclass", "npc"], function(v) {
+				getAttrs(["class", "base_level", "custom_class", "cust_classname", "cust_hitdietype", "cust_spellcasting_ability", "cust_strength_save_prof", "cust_dexterity_save_prof", "cust_constitution_save_prof", "cust_intelligence_save_prof", "cust_wisdom_save_prof", "cust_charisma_save_prof", "cust_luck_save_prof", "strength_save_prof", "dexterity_save_prof", "constitution_save_prof", "intelligence_save_prof", "wisdom_save_prof", "charisma_save_prof", "luck_save_prof", "subclass", "multiclass1", "multiclass1_subclass", "multiclass2", "multiclass2_subclass", "multiclass3", "multiclass3_subclass", "npc"], function(v) {
 					if (v.npc && v.npc == "1") {
 						return;
 					}
@@ -12374,7 +12510,8 @@
 							constitution_save_prof: v.cust_constitution_save_prof,
 							intelligence_save_prof: v.cust_intelligence_save_prof,
 							wisdom_save_prof: v.cust_wisdom_save_prof,
-							charisma_save_prof: v.cust_charisma_save_prof
+							charisma_save_prof: v.cust_charisma_save_prof,
+							luck_save_prof: v.cust_luck_save_prof
 						});
 					} else {
 						update = {};
@@ -12388,6 +12525,7 @@
 								update["intelligence_save_prof"] = 0;
 								update["wisdom_save_prof"] = 0;
 								update["charisma_save_prof"] = 0;
+								update["luck_save_prof"] = 0;
 								break;
 							case "Barbarian":
 								update["hitdietype"] = 12;
@@ -12398,6 +12536,7 @@
 								update["intelligence_save_prof"] = 0;
 								update["wisdom_save_prof"] = 0;
 								update["charisma_save_prof"] = 0;
+								update["luck_save_prof"] = 0;
 								break;
 							case "Bard":
 								update["hitdietype"] = 8;
@@ -12408,6 +12547,7 @@
 								update["intelligence_save_prof"] = 0;
 								update["wisdom_save_prof"] = 0;
 								update["charisma_save_prof"] = "(@{pb})";
+								update["luck_save_prof"] = 0;
 								break;
 							case "Cleric":
 								update["hitdietype"] = 8;
@@ -12418,6 +12558,7 @@
 								update["intelligence_save_prof"] = 0;
 								update["wisdom_save_prof"] = "(@{pb})";
 								update["charisma_save_prof"] = "(@{pb})";
+								update["luck_save_prof"] = 0;
 								break;
 							case "Druid":
 								update["hitdietype"] = 8;
@@ -12428,6 +12569,7 @@
 								update["intelligence_save_prof"] = "(@{pb})";
 								update["wisdom_save_prof"] = "(@{pb})";
 								update["charisma_save_prof"] = 0;
+								update["luck_save_prof"] = 0;
 								break;
 							case "Fighter":
 								update["hitdietype"] = 10;
@@ -12438,6 +12580,7 @@
 								update["intelligence_save_prof"] = 0;
 								update["wisdom_save_prof"] = 0;
 								update["charisma_save_prof"] = 0;
+								update["luck_save_prof"] = 0;
 								break;
 							case "Monk":
 								update["hitdietype"] = 8;
@@ -12448,6 +12591,7 @@
 								update["intelligence_save_prof"] = 0;
 								update["wisdom_save_prof"] = 0;
 								update["charisma_save_prof"] = 0;
+								update["luck_save_prof"] = 0;
 								break;
 							case "Paladin":
 								update["hitdietype"] = 10;
@@ -12458,6 +12602,7 @@
 								update["intelligence_save_prof"] = 0;
 								update["wisdom_save_prof"] = "(@{pb})";
 								update["charisma_save_prof"] = "(@{pb})";
+								update["luck_save_prof"] = 0;
 								break;
 							case "Ranger":
 								update["hitdietype"] = 10;
@@ -12468,6 +12613,7 @@
 								update["intelligence_save_prof"] = 0;
 								update["wisdom_save_prof"] = 0;
 								update["charisma_save_prof"] = 0;
+								update["luck_save_prof"] = 0;
 								break;
 							case "Rogue":
 								update["hitdietype"] = 8;
@@ -12478,6 +12624,7 @@
 								update["intelligence_save_prof"] = "(@{pb})";
 								update["wisdom_save_prof"] = 0;
 								update["charisma_save_prof"] = 0;
+								update["luck_save_prof"] = 0;
 								break;
 							case "Sorcerer":
 								update["hitdietype"] = 6;
@@ -12488,6 +12635,7 @@
 								update["intelligence_save_prof"] = 0;
 								update["wisdom_save_prof"] = 0;
 								update["charisma_save_prof"] = "(@{pb})";
+								update["luck_save_prof"] = 0;
 								break;
 							case "Warlock":
 								update["hitdietype"] = 8;
@@ -12498,6 +12646,7 @@
 								update["intelligence_save_prof"] = 0;
 								update["wisdom_save_prof"] = "(@{pb})";
 								update["charisma_save_prof"] = "(@{pb})";
+								update["luck_save_prof"] = 0;
 								break;
 							case "Wizard":
 								update["hitdietype"] = 6;
@@ -12508,6 +12657,7 @@
 								update["intelligence_save_prof"] = "(@{pb})";
 								update["wisdom_save_prof"] = "(@{pb})";
 								update["charisma_save_prof"] = 0;
+								update["luck_save_prof"] = 0;
 								break;
 						}
 						setAttrs(update, {
@@ -12841,7 +12991,7 @@
 
 			var update_spell_info = function(attr) {
 				var update = {};
-				getAttrs(["spellcasting_ability", "spell_dc_mod", "globalmagicmod", "strength_mod", "dexterity_mod", "constitution_mod", "intelligence_mod", "wisdom_mod", "charisma_mod"], function(v) {
+				getAttrs(["spellcasting_ability", "spell_dc_mod", "globalmagicmod", "strength_mod", "dexterity_mod", "constitution_mod", "intelligence_mod", "wisdom_mod", "charisma_mod", "luck_mod"], function(v) {
 					if (attr && v["spellcasting_ability"] && v["spellcasting_ability"].indexOf(attr) === -1) {
 						return
 					};
@@ -13121,6 +13271,8 @@
 				getAttrs(["npc_str_save_base", "npc_dex_save_base", "npc_con_save_base", "npc_int_save_base", "npc_wis_save_base", "npc_cha_save_base"], function(v) {
 					var update = {};
 					var last_save = 0;
+					var lck_save_flag = 0;
+					var lck_save = "";
 					var cha_save_flag = 0;
 					var cha_save = "";
 					var wis_save_flag = 0;
@@ -13134,6 +13286,18 @@
 					var str_save_flag = 0;
 					var str_save = "";
 					// 1 = Positive, 2 = Last, 3 = Negative, 4 = Last Negative
+					if (v.npc_lck_save_base && v.npc_lck_save_base != "@{luck_mod}") {
+						lck_save = parseInt(v.npc_lck_save_base, 10);
+						if (last_save === 0) {
+							last_save = 1;
+							lck_save_flag = lck_save < 0 ? 4 : 2;
+						} else {
+							lck_save_flag = lck_save < 0 ? 3 : 1;
+						}
+					} else {
+						lck_save_flag = 0;
+						lck_save = "";
+					};
 					if (v.npc_cha_save_base && v.npc_cha_save_base != "@{charisma_mod}") {
 						cha_save = parseInt(v.npc_cha_save_base, 10);
 						if (last_save === 0) {
@@ -13207,7 +13371,7 @@
 						str_save = "";
 					};
 
-					update["npc_saving_flag"] = "" + cha_save + wis_save + int_save + con_save + dex_save + str_save;
+					update["npc_saving_flag"] = "" + lck_save + cha_save + wis_save + int_save + con_save + dex_save + str_save;
 					update["npc_str_save"] = str_save;
 					update["npc_str_save_flag"] = str_save_flag;
 					update["npc_dex_save"] = dex_save;
@@ -13220,6 +13384,8 @@
 					update["npc_wis_save_flag"] = wis_save_flag;
 					update["npc_cha_save"] = cha_save;
 					update["npc_cha_save_flag"] = cha_save_flag;
+					update["npc_lck_save"] = lck_save;
+					update["npc_lck_save_flag"] = lck_save_flag;
 					setAttrs(update, {
 						silent: true
 					});
