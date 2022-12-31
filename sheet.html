@@ -1284,6 +1284,29 @@
 											<span name="attr_luck"></span>
 										</div>
 									</div>
+									<div class="sheet-container-box sheet-pc-armor">
+										<div class="sheet-container-header">
+											<button type="roll" name="roll_defence" value="@{wtype}&{template:simple} {{rname=Defence Roll}} {{mod=@{ac}}} {{r1=[[@{d20}+@{ac}]]}} @{rtype}+@{ac}]]}} @{charname_output}">Armor Class</button>
+										</div>
+										<div class="sheet-container-body">
+											<input type="text" name="attr_ac" title="@{ac}">
+										</div>
+									</div>
+									<div class="sheet-container-box sheet-pc-initiative">
+										<div class="sheet-container-header">
+											<button type="roll" name="roll_initiative" value="@{wtype}&{template:simple} {{rname=Initiative}} {{mod=@{initiative_bonus}}} {{r1=[[@{initiative_style}+@{initiative_bonus}@{pbd_safe}[INIT] &{tracker}]]}} {{normal=1}} @{charname_output}">Initiative</button>
+										</div>
+										<div class="sheet-container-body">
+											<span name="attr_initiative_bonus" title="@{initiative_bonus}"></span>
+										</div>
+									</div>
+									<div class="sheet-container-box sheet-pc-speed">
+										<div class="sheet-container-header">Speed</div>
+										<div class="sheet-container-body">
+											<input type="text" name="attr_speed" title="@{speed}">
+										</div>
+									</div>
+
 								</div>
 								<div class="sheet-container-bar sheet-container-bar-left sheet-pc-proficiency-bonus">
 									<div class="sheet-container-header">
@@ -2070,34 +2093,133 @@
 									</div>
 								</div>
 							</div>
-							<div class="sheet-container-well sheet-container-well-trackers">
-								<div class="sheet-container-box sheet-pc-armor">
+							<div class="sheet-container-well sheet-container-well-health">
+								<div class="sheet-container-box sheet-pc-hp-max">
+									<div class="sheet-container-header">Hit Points</div>
+									<div class="sheet-container-body">
+										<input type="text" name="attr_hp_max" title="@{hp_max}">
+									</div>
+									<div class="sheet-container-footer">Maximum</div>
+								</div>
+								<div class="sheet-container-box sheet-pc-hp-current">
+									<div class="sheet-container-header">Hit Points</div>
+									<div class="sheet-container-body">
+										<input type="text" name="attr_hp" title="@{hp}">
+										<input type="text" name="attr_hp_temp" title="@{hp_temp}">
+									</div>
+									<div class="sheet-container-footer">
+										<span>Current</span>
+										<span>Temporary</span>
+									</div>
+								</div>
+								<div class="sheet-container-box sheet-pc-hit-dice">
 									<div class="sheet-container-header">
-										<button type="roll" name="roll_defence" value="@{wtype}&{template:simple} {{rname=Defence Roll}} {{mod=@{ac}}} {{r1=[[@{d20}+@{ac}]]}} @{rtype}+@{ac}]]}} @{charname_output}">Armor Class</button>
+										<button type="roll" name="roll_hit_dice" value="@{wtype}&{template:simple} {{rname=Hit Dice}} {{mod=D@{hitdie_final}+[[@{constitution_mod}[CON]]]}} {{r1=[[1d@{hitdie_final}+[[@{constitution_mod}]][CON]]]}} {{normal=1}} @{charname_output}">Hit Dice</button>
 									</div>
 									<div class="sheet-container-body">
-										<input type="text" name="attr_ac" title="@{ac}">
+										<input type="text" name="attr_hit_dice" title="@{hit_dice}">
+										<span>/</span>
+										<input type="text" name="attr_hit_dice_max" title="@{hit_dice_max}">
+									</div>
+									<div class="sheet-container-footer">
+										<span>Remaining</span>
+										<span>Maximum</span>
 									</div>
 								</div>
-								<div class="sheet-container-box sheet-pc-initiative">
+								<div class="sheet-container-box sheet-pc-death">
 									<div class="sheet-container-header">
-										<button type="roll" name="roll_initiative" value="@{wtype}&{template:simple} {{rname=Initiative}} {{mod=@{initiative_bonus}}} {{r1=[[@{initiative_style}+@{initiative_bonus}@{pbd_safe}[INIT] &{tracker}]]}} {{normal=1}} @{charname_output}">Initiative</button>
+										<input type="hidden" name="attr_show_death_failures_flag" value="1" class="sheet-field-toggle">
+										<button type="roll" name="roll_death_save" value="@{wtype}&{template:simple} {{rname=Death Save}} {{mod=@{death_save_bonus}}} {{r1=[[@{d20}+@{death_save_bonus}[MOD]@{globalsavingthrowbonus}]]}} {{normal=1}} {{global=@{global_save_mod}}} @{charname_output}">
+											Death Save Failures
+										</button>
+										<input type="hidden" name="attr_show_death_failures_flag" value="1" class="sheet-field-untoggle">
+										<button type="roll" name="roll_death_save" value="@{wtype}&{template:simple} {{rname=Death Save}} {{mod=@{death_save_bonus}}} {{r1=[[@{d20}+@{death_save_bonus}[MOD]@{globalsavingthrowbonus}]]}} {{normal=1}} {{global=@{global_save_mod}}} @{charname_output}">
+											Death Saves
+										</button>
 									</div>
 									<div class="sheet-container-body">
-										<span name="attr_initiative_bonus" title="@{initiative_bonus}"></span>
+										<input type="hidden" name="attr_show_death_failures_flag" value="1" class="sheet-field-untoggle">
+										<div class="sheet-death-save-success">
+											<input type="hidden" name="attr_show_death_failures_flag" value="1" class="sheet-field-untoggle">
+											<span>S:</span>
+											<div class="sheet-checkbox-image">
+												<input type="checkbox" name="attr_deathsave_success1" title="@{deathsave_success1}">
+												<span></span>
+											</div>
+											<div class="sheet-checkbox-image">
+												<input type="checkbox" name="attr_deathsave_success2" title="@{deathsave_success2}">
+												<span></span>
+											</div>
+											<div class="sheet-checkbox-image">
+												<input type="checkbox" name="attr_deathsave_success3" title="@{deathsave_success3}">
+												<span></span>
+											</div>
+										</div>
+										<div class="sheet-death-save-fail">
+											<input type="hidden" name="attr_show_death_failures_flag" value="1" class="sheet-field-untoggle">
+											<span>F:</span>
+											<div class="sheet-checkbox-image">
+												<input type="checkbox" name="attr_deathsave_fail1" title="@{deathsave_fail1}">
+												<span></span>
+											</div>
+											<div class="sheet-checkbox-image">
+												<input type="checkbox" name="attr_deathsave_fail2" title="@{deathsave_fail2}">
+												<span></span>
+											</div>
+											<div class="sheet-checkbox-image">
+												<input type="checkbox" name="attr_deathsave_fail3" title="@{deathsave_fail3}">
+												<span></span>
+											</div>
+										</div>
 									</div>
 								</div>
-								<div class="sheet-container-box sheet-pc-perception">
-									<div class="sheet-container-header">Passive Perception</div>
+								<div class="sheet-container-panel sheet-pc-health">
+									<div class="sheet-container-header">Health</div>
 									<div class="sheet-container-body">
-										<input type="text" name="attr_passive_wisdom" title="@{passive_wisdom}" value="(10+@{perception_bonus}+@{passiveperceptionmod})" disabled="true" hidden>
-										<span name="attr_passive_wisdom" title="@{passive_wisdom}"></span>
-									</div>
-								</div>
-								<div class="sheet-container-box sheet-pc-speed">
-									<div class="sheet-container-header">Speed</div>
-									<div class="sheet-container-body">
-										<input type="text" name="attr_speed" title="@{speed}">
+										<ul class="sheet-list-conditions">
+											<li>
+												<label class="sheet-radio">
+													<input type="radio" name="attr_condition_health" value="0" title="@{condition_health}">
+													<span title="@{condition_health}">Robust</span>
+												</label>
+											</li>
+											<li>
+												<label class="sheet-radio">
+													<input type="radio" name="attr_condition_health" value="1" title="@{condition_health}">
+													<span title="@{condition_health}">Healthy</span>
+												</label>
+											</li>
+											<li>
+												<label class="sheet-radio">
+													<input type="radio" name="attr_condition_health" value="2" checked="checked" title="@{condition_health}">
+													<span title="@{condition_health}">Ok</span>
+												</label>
+											</li>
+											<li>
+												<label class="sheet-radio">
+													<input type="radio" name="attr_condition_health" value="3" title="@{condition_health}">
+													<span title="@{condition_health}">Hit</span>
+												</label>
+											</li>
+											<li>
+												<label class="sheet-radio">
+													<input type="radio" name="attr_condition_health" value="4" title="@{condition_health}">
+													<span title="@{condition_health}">Bloodied</span>
+												</label>
+											</li>
+											<li>
+												<label class="sheet-radio">
+													<input type="radio" name="attr_condition_health" value="5" title="@{condition_health}">
+													<span title="@{condition_health}">Hurt</span>
+												</label>
+											</li>
+											<li>
+												<label class="sheet-radio">
+													<input type="radio" name="attr_condition_health" value="6" title="@{condition_health}">
+													<span title="@{condition_health}">Critical</span>
+												</label>
+											</li>
+										</ul>
 									</div>
 								</div>
 								<div class="sheet-container-bar sheet-pc-fate">
@@ -2136,180 +2258,7 @@
 								</div>
 							</div>
 							<div class="sheet-grouping-pc-health-conditions">
-								<div class="sheet-container-well sheet-container-well-health">
-									<div class="sheet-container-box sheet-pc-hp-max">
-										<div class="sheet-container-header">Hit Points</div>
-										<div class="sheet-container-body">
-											<input type="text" name="attr_hp_max" title="@{hp_max}">
-										</div>
-										<div class="sheet-container-footer">Maximum</div>
-									</div>
-									<div class="sheet-container-box sheet-pc-hp-current">
-										<div class="sheet-container-header">Hit Points</div>
-										<div class="sheet-container-body">
-											<input type="text" name="attr_hp" title="@{hp}">
-											<input type="text" name="attr_hp_temp" title="@{hp_temp}">
-										</div>
-										<div class="sheet-container-footer">
-											<span>Current</span>
-											<span>Temporary</span>
-										</div>
-									</div>
-									<div class="sheet-container-box sheet-pc-hit-dice">
-										<div class="sheet-container-header">
-											<button type="roll" name="roll_hit_dice" value="@{wtype}&{template:simple} {{rname=Hit Dice}} {{mod=D@{hitdie_final}+[[@{constitution_mod}[CON]]]}} {{r1=[[1d@{hitdie_final}+[[@{constitution_mod}]][CON]]]}} {{normal=1}} @{charname_output}">Hit Dice</button>
-										</div>
-										<div class="sheet-container-body">
-											<input type="text" name="attr_hit_dice" title="@{hit_dice}">
-											<span>/</span>
-											<input type="text" name="attr_hit_dice_max" title="@{hit_dice_max}">
-										</div>
-										<div class="sheet-container-footer">
-											<span>Remaining</span>
-											<span>Maximum</span>
-										</div>
-									</div>
-									<div class="sheet-container-box sheet-pc-death">
-										<div class="sheet-container-header">
-											<input type="hidden" name="attr_show_death_failures_flag" value="1" class="sheet-field-toggle">
-											<button type="roll" name="roll_death_save" value="@{wtype}&{template:simple} {{rname=Death Save}} {{mod=@{death_save_bonus}}} {{r1=[[@{d20}+@{death_save_bonus}[MOD]@{globalsavingthrowbonus}]]}} {{normal=1}} {{global=@{global_save_mod}}} @{charname_output}">
-												Death Save Failures
-											</button>
-											<input type="hidden" name="attr_show_death_failures_flag" value="1" class="sheet-field-untoggle">
-											<button type="roll" name="roll_death_save" value="@{wtype}&{template:simple} {{rname=Death Save}} {{mod=@{death_save_bonus}}} {{r1=[[@{d20}+@{death_save_bonus}[MOD]@{globalsavingthrowbonus}]]}} {{normal=1}} {{global=@{global_save_mod}}} @{charname_output}">
-												Death Saves
-											</button>
-										</div>
-										<div class="sheet-container-body">
-											<input type="hidden" name="attr_show_death_failures_flag" value="1" class="sheet-field-untoggle">
-											<div class="sheet-death-save-success">
-												<input type="hidden" name="attr_show_death_failures_flag" value="1" class="sheet-field-untoggle">
-												<span>S:</span>
-												<div class="sheet-checkbox-image">
-													<input type="checkbox" name="attr_deathsave_success1" title="@{deathsave_success1}">
-													<span></span>
-												</div>
-												<div class="sheet-checkbox-image">
-													<input type="checkbox" name="attr_deathsave_success2" title="@{deathsave_success2}">
-													<span></span>
-												</div>
-												<div class="sheet-checkbox-image">
-													<input type="checkbox" name="attr_deathsave_success3" title="@{deathsave_success3}">
-													<span></span>
-												</div>
-											</div>
-											<div class="sheet-death-save-fail">
-												<input type="hidden" name="attr_show_death_failures_flag" value="1" class="sheet-field-untoggle">
-												<span>F:</span>
-												<div class="sheet-checkbox-image">
-													<input type="checkbox" name="attr_deathsave_fail1" title="@{deathsave_fail1}">
-													<span></span>
-												</div>
-												<div class="sheet-checkbox-image">
-													<input type="checkbox" name="attr_deathsave_fail2" title="@{deathsave_fail2}">
-													<span></span>
-												</div>
-												<div class="sheet-checkbox-image">
-													<input type="checkbox" name="attr_deathsave_fail3" title="@{deathsave_fail3}">
-													<span></span>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="sheet-container-panel sheet-pc-health">
-										<div class="sheet-container-header">Health</div>
-										<div class="sheet-container-body">
-											<ul class="sheet-list-conditions">
-												<li>
-													<label class="sheet-radio">
-														<input type="radio" name="attr_condition_health" value="0" title="@{condition_health}">
-														<span title="@{condition_health}">Robust</span>
-													</label>
-												</li>
-												<li>
-													<label class="sheet-radio">
-														<input type="radio" name="attr_condition_health" value="1" title="@{condition_health}">
-														<span title="@{condition_health}">Healthy</span>
-													</label>
-												</li>
-												<li>
-													<label class="sheet-radio">
-														<input type="radio" name="attr_condition_health" value="2" checked="checked" title="@{condition_health}">
-														<span title="@{condition_health}">Ok</span>
-													</label>
-												</li>
-												<li>
-													<label class="sheet-radio">
-														<input type="radio" name="attr_condition_health" value="3" title="@{condition_health}">
-														<span title="@{condition_health}">Hit</span>
-													</label>
-												</li>
-												<li>
-													<label class="sheet-radio">
-														<input type="radio" name="attr_condition_health" value="4" title="@{condition_health}">
-														<span title="@{condition_health}">Bloodied</span>
-													</label>
-												</li>
-												<li>
-													<label class="sheet-radio">
-														<input type="radio" name="attr_condition_health" value="5" title="@{condition_health}">
-														<span title="@{condition_health}">Hurt</span>
-													</label>
-												</li>
-												<li>
-													<label class="sheet-radio">
-														<input type="radio" name="attr_condition_health" value="6" title="@{condition_health}">
-														<span title="@{condition_health}">Critical</span>
-													</label>
-												</li>
-											</ul>
-										</div>
-									</div>
-									<div class="sheet-container-panel sheet-pc-wounds">
-										<div class="sheet-container-header">Wounds & Injuries</div>
-										<div class="sheet-container-body">
-											<div class="sheet-container-body-header">
-												<span></span>
-												<span>Description</span>
-											</div>
-											<span name="attr_wounds_exhaustion_mod" class="sheet-calculated sheet-hidden">0</span>
-											<fieldset class="repeating_wounds">
-												<div class="sheet-fieldset-item">
-													<div class="sheet-checkbox-cog">
-														<input type="checkbox" name="attr_options-flag" checked="checked"><span></span>
-														<span class="sheet-toggle-icon"></span>
-													</div>
-													<input type="checkbox" name="attr_options-flag" checked="checked" class="sheet-toggle" hidden>
-													<div class="sheet-toggle-checked">
-														<div class="sheet-form">
-															<div class="sheet-form-header">Edit Wound/Injury</div>
-															<div class="sheet-form-body">
-																<div class="sheet-form-group">
-																	<input type="text" name="attr_wound_description">
-																</div>
-																<div class="sheet-form-group">
-																	<label class="sheet-form-checkbox">
-																		<input type="checkbox" name="attr_wound_untreated" value="1" checked="checked">
-																		<span>Is untreated</span>
-																	</label>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="sheet-toggle-unchecked">
-														<div class="sheet-pc-wound">
-															<div class="sheet-checkbox-image">
-																<input type="checkbox" name="attr_wound_untreated" value="1" checked="checked">
-																<span></span>
-															</div>
-															<span name="attr_wound_description"></span>
-														</div>
-													</div>
-												</div>
-											</fieldset>
-										</div>
-									</div>
-								</div>
+
 								<input type="hidden" name="attr_show_survival_conditions" value="0" class="sheet-field-toggle">
 								<div class="sheet-container-well sheet-container-well-conditions">
 									<div class="sheet-container-panel sheet-pc-conditions">
