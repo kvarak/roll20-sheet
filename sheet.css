@@ -1977,24 +1977,17 @@
     .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-core .sheet-container-well-effects .sheet-pc-exhaustion-details li:nth-of-type(7) input[type=radio]:checked + span::after {
       background: #cf0101;
       height: 82px; }
-.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-core .sheet-container-well-trackers {
-  grid-area: trackers;
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: 65px auto;
-  grid-column-gap: 5px;
-  grid-row-gap: 5px;
-  grid-template-areas: "hp-max hp hp health fate fate"
- "hit-dice hit-dice death health inspiration inspiration"; }
 .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-core .sheet-container-well-health {
   display: grid;
   grid-area: health;
   grid-column-gap: 5px;
   grid-row-gap: 5px;
   grid-template-areas: "hp-max hp hp health fate fate"
- "hit-dice hit-dice death health inspiration inspiration";
+    "hp-max hp hp health inspiration inspiration"
+    "hit-dice hit-dice death health training training"
+    "hit-dice hit-dice death health training training";
   grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: 65px auto; }
+  grid-template-rows: auto auto auto auto; }
   .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-core .sheet-container-well-health .sheet-pc-hp-max {
     grid-area: hp-max; }
     .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-core .sheet-container-well-health .sheet-pc-hp-max .sheet-container-body {
@@ -2061,9 +2054,11 @@
     max-height: 135px; }
   .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-core .sheet-container-well-health .sheet-pc-fate {
       grid-area: fate; }
-    .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-core .sheet-container-well-health .sheet-pc-inspiration {
-      grid-area: inspiration; }
-    .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-core .sheet-container-well-health .sheet-pc-wounds {
+  .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-core .sheet-container-well-health .sheet-pc-inspiration {
+    grid-area: inspiration; }
+  .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-core .sheet-container-well-health .sheet-pc-training {
+    grid-area: training; }
+  .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-core .sheet-container-well-health .sheet-pc-wounds {
     grid-area: wounds; }
     .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-core .sheet-container-well-health .sheet-pc-wounds .sheet-container-body-header span:first-of-type {
       width: 15px;
@@ -2832,8 +2827,6 @@
   grid-area: xp; }
   .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-features .sheet-pc-xp input {
     width: 140px; }
-.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-features .sheet-pc-training {
-  grid-area: training; }
 .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-features .sheet-pc-memories {
   grid-area: memories; }
   .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-features .sheet-pc-memories .repitem + .repitem {

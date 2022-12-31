@@ -7,8 +7,8 @@ The rules this sheet tries to follow are located here: http://dnd.rigo.nu/
 ## Differences
 - The skills list it totally different and divided into three main categories; *Untrained*, *Knowledge* and *Practical*.
 - Luck is a new ability score.
-- Moved around some boxes on the front page
-
+- Moved around some boxes on the core page
+- Repurposed training to a custom counter on the core page
 
 ## Preview
 ![preview](sheet.png)
