@@ -2128,19 +2128,19 @@
 								</div>
 								<div class="sheet-container-box sheet-pc-death">
 									<div class="sheet-container-header">
-										<input type="hidden" name="attr_show_death_failures_flag" value="1" class="sheet-field-toggle">
+										<input type="hidden" name="attr_show_death_failures_flag" value="1" class="sheet-field-untoggle">
 										<button type="roll" name="roll_death_save" value="@{wtype}&{template:simple} {{rname=Death Save}} {{mod=@{death_save_bonus}}} {{r1=[[@{d20}+@{death_save_bonus}[MOD]@{globalsavingthrowbonus}]]}} {{normal=1}} {{global=@{global_save_mod}}} @{charname_output}">
 											Death Save Failures
 										</button>
-										<input type="hidden" name="attr_show_death_failures_flag" value="1" class="sheet-field-untoggle">
+										<input type="hidden" name="attr_show_death_failures_flag" value="1" class="sheet-field-toggle">
 										<button type="roll" name="roll_death_save" value="@{wtype}&{template:simple} {{rname=Death Save}} {{mod=@{death_save_bonus}}} {{r1=[[@{d20}+@{death_save_bonus}[MOD]@{globalsavingthrowbonus}]]}} {{normal=1}} {{global=@{global_save_mod}}} @{charname_output}">
 											Death Saves
 										</button>
 									</div>
 									<div class="sheet-container-body">
-										<input type="hidden" name="attr_show_death_failures_flag" value="1" class="sheet-field-untoggle">
+										<input type="hidden" name="attr_show_death_failures_flag" value="1" class="sheet-field-toggle">
 										<div class="sheet-death-save-success">
-											<input type="hidden" name="attr_show_death_failures_flag" value="1" class="sheet-field-untoggle">
+											<input type="hidden" name="attr_show_death_failures_flag" value="1" class="sheet-field-toggle">
 											<span>S:</span>
 											<div class="sheet-checkbox-image">
 												<input type="checkbox" name="attr_deathsave_success1" title="@{deathsave_success1}">
@@ -2156,7 +2156,7 @@
 											</div>
 										</div>
 										<div class="sheet-death-save-fail">
-											<input type="hidden" name="attr_show_death_failures_flag" value="1" class="sheet-field-untoggle">
+											<input type="hidden" name="attr_show_death_failures_flag" value="1" class="sheet-field-toggle">
 											<span>F:</span>
 											<div class="sheet-checkbox-image">
 												<input type="checkbox" name="attr_deathsave_fail1" title="@{deathsave_fail1}">
@@ -3652,7 +3652,7 @@
 								</div>
 							</div>
 							<div class="sheet-container-well sheet-container-well-equipment-encumberance">
-								<input type="hidden" name="attr_use_inventory_slots" value="1" class="sheet-field-untoggle">
+								<input type="hidden" name="attr_use_inventory_slots" value="1" class="sheet-field-toggle">
 								<div class="sheet-container-box sheet-pc-weight">
 									<div class="sheet-container-header">Weight</div>
 									<div class="sheet-container-body">
@@ -3665,7 +3665,7 @@
 										<span>Maximum</span>
 									</div>
 								</div>
-								<input type="hidden" name="attr_use_inventory_slots" value="1" class="sheet-field-toggle">
+								<input type="hidden" name="attr_use_inventory_slots" value="1" class="sheet-field-untoggle">
 								<div class="sheet-container-box sheet-pc-slots">
 									<div class="sheet-container-header">Inventory Slots</div>
 									<div class="sheet-container-body">
@@ -6694,7 +6694,7 @@
 													<label>Encumberance:</label>
 													<select name="attr_encumberance_setting" title="@{encumberance_setting}">
 														<option value="off">Simple</option>
-														<option value="on">Variant (PHB p176)</option>
+														<option value="on" selected="selected">Variant (PHB p176)</option>
 														<option value="disabled">Off</option>
 													</select>
 												</div>
@@ -6730,7 +6730,7 @@
 											<div class="sheet-form-body">
 												<div class="sheet-form-group">
 													<label class="sheet-form-checkbox" title="@{show_death_failures_flag}">
-														<input type="checkbox" name="attr_show_death_failures_flag" value="1" checked="checked">
+														<input type="checkbox" name="attr_show_death_failures_flag" value="1">
 														<span>Show Death Save Failures Only</span>
 													</label>
 												</div>
@@ -6742,13 +6742,13 @@
 												</div>
 												<div class="sheet-form-group">
 													<label class="sheet-form-checkbox" title="@{show_stress_flag}">
-														<input type="checkbox" name="attr_show_stress_flag" value="0">
+														<input type="checkbox" name="attr_show_stress_flag" value="1">
 														<span>Show Stress & Afflictions</span>
 													</label>
 												</div>
 												<div class="sheet-form-group">
 													<label class="sheet-form-checkbox" title="@{show_survival_conditions}">
-														<input type="checkbox" name="attr_show_survival_conditions" value="0">
+														<input type="checkbox" name="attr_show_survival_conditions" value="1">
 														<span>Show Survival Conditions</span>
 													</label>
 												</div>
@@ -6760,7 +6760,7 @@
 												</div>
 												<div class="sheet-form-group">
 													<label class="sheet-form-checkbox" title="@{use_inventory_slots}">
-														<input type="checkbox" name="attr_use_inventory_slots" value="1" checked="checked">
+														<input type="checkbox" name="attr_use_inventory_slots" value="1">
 														<span>Use Inventory Slots</span>
 													</label>
 												</div>
@@ -7306,11 +7306,11 @@
 			<input type='hidden' name='attr_lvl7_slots_total' value='0'>
 			<input type='hidden' name='attr_lvl8_slots_total' value='0'>
 			<input type='hidden' name='attr_lvl9_slots_total' value='0'>
-			<input type='hidden' name='attr_show_death_failures_flag' value='1'>
-			<input type='hidden' name='attr_show_exhaustion_flag' value='1'>
+			<input type='hidden' name='attr_show_death_failures_flag' value='0'>
+			<input type='hidden' name='attr_show_exhaustion_flag' value='0'>
 			<input type='hidden' name='attr_show_stress_flag' value='0'>
 			<input type='hidden' name='attr_show_survival_conditions' value='0'>
-			<input type='hidden' name='attr_use_inventory_slots' value='1'>
+			<input type='hidden' name='attr_use_inventory_slots' value='0'>
 			<input type='hidden' name='attr_use_intelligent_initiative' value='1'>
 			<input type="hidden" name="attr_condition_health_max" value="6">
 			<!-- COMPENDIUM DROP CATCHERS -->

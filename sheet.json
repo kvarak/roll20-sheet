@@ -268,7 +268,6 @@
       "displayname": "Use Inventory Slots",
       "type": "checkbox",
       "value": "1",
-      "checked": "checked",
       "description": "[Giffyglyph's Darker Dungeons] Track your inventory using slots instead of weight."
     },
     {
@@ -284,7 +283,6 @@
       "displayname": "Death Save Failures Only",
       "type": "checkbox",
       "value": "1",
-      "checked": "checked",
       "description": "[Giffyglyph's Darker Dungeons] Track only death save failures."
     },
     {
@@ -292,7 +290,6 @@
       "displayname": "Show Stress",
       "type": "checkbox",
       "value": "1",
-      "checked": "checked",
       "description": "[Giffyglyph's Darker Dungeons] Show the Stress panel, used for tracking your character's mental stress and afflicitions."
     },
     {
@@ -300,7 +297,6 @@
       "displayname": "Show Survival Conditions",
       "type": "checkbox",
       "value": "1",
-      "checked": "checked",
       "description": "[Giffyglyph's Darker Dungeons] Show the Survival Conditions panel, used for tracking hunger/thirst/fatigue/temperature."
     },
     {
