@@ -2729,13 +2729,11 @@
 .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-features .sheet-container-well-memories {
   grid-area: memories;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 30px) auto;
+  grid-template-columns: auto;
+  grid-template-rows: auto;
   grid-column-gap: 5px;
   grid-row-gap: 5px;
-  grid-template-areas: "memories xp"
- "memories training"
- "memories notes"; }
+  grid-template-areas: "memories notes"; }
 .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-features .sheet-container-well-features {
   grid-area: features;
   display: grid;
