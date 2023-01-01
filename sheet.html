@@ -3172,6 +3172,74 @@
 											</fieldset>
 										</div>
 									</div>
+									<div class="sheet-container-panel sheet-pc-features-core">
+										<div class="sheet-container-header">Features & Traits</div>
+										<div class="sheet-container-body">
+											<fieldset class="repeating_traits">
+												<div class="sheet-fieldset-item">
+													<div class="sheet-checkbox-cog">
+														<input type="checkbox" name="attr_options-flag" checked="checked">
+														<span class="sheet-toggle-icon"></span>
+													</div>
+													<input type="checkbox" name="attr_options-flag" checked="checked" class="sheet-toggle" hidden>
+													<div class="sheet-toggle-checked">
+														<div class="sheet-form">
+															<div class="sheet-form-header">Edit Feature</div>
+															<div class="sheet-form-body">
+																<div class="sheet-form-group">
+																	<label>Name:</label>
+																	<input type="text" name="attr_name">
+																</div>
+																<div class="sheet-form-group">
+																	<label>Source:</label>
+																	<select name="attr_source">
+																		<option selected="selected">Racial</option>
+																		<option>Class</option>
+																		<option>Feat</option>
+																		<option>Background</option>
+																		<option>Other</option>
+																	</select>
+																</div>
+																<div class="sheet-form-group">
+																	<label>Source Type:</label>
+																	<input type="text" name="attr_source_type">
+																</div>
+																<div class="sheet-form-group">
+																	<textarea name="attr_description"></textarea>
+																</div>
+																<div class="sheet-form-group">
+																	<label class="sheet-form-checkbox">
+																		<input type="checkbox" name="attr_hide_details" value="1">
+																		<span>Hide Details</span>
+																	</label>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="sheet-toggle-unchecked">
+														<div class="sheet-pc-feature">
+															<button type="roll" name="roll_output" value="@{wtype}&{template:traits} @{charname_output} {{name=@{name}}} {{source=@{source}: @{source_type}}} {{description=@{description}}}">
+																<div class="sheet-pc-feature-name">
+																	<span name="attr_name"></span>
+																</div>
+																<input type="hidden" name="attr_hide_details" class="sheet-field-untoggle">
+																<div class="sheet-pc-feature-details">
+																	<span class="sheet-pc-feature-source">
+																		<span name="attr_source"></span>
+																		<span name="attr_source_type"></span>
+																	</span>
+																	<span name="attr_description"></span>
+																</div>
+															</button>
+														</div>
+													</div>
+												</div>
+											</fieldset>
+										</div>
+									</div>
+
+
+
 								</div>
 							</div>
 						</div>
@@ -3338,25 +3406,25 @@
 										</div>
 									</div>
 								</div>
-								<div class="sheet-container-box sheet-pc-personality">
+								<div class="sheet-container-panel sheet-pc-personality">
 									<div class="sheet-container-header">Personality Traits</div>
 									<div class="sheet-container-body">
 										<textarea name="attr_personality_traits" title="@{personality_traits}"></textarea>
 									</div>
 								</div>
-								<div class="sheet-container-box sheet-pc-ideals">
+								<div class="sheet-container-panel sheet-pc-ideals">
 									<div class="sheet-container-header">Ideals</div>
 									<div class="sheet-container-body">
 										<textarea name="attr_ideals" title="@{ideals}"></textarea>
 									</div>
 								</div>
-								<div class="sheet-container-box sheet-pc-bonds">
+								<div class="sheet-container-panel sheet-pc-bonds">
 									<div class="sheet-container-header">Bonds</div>
 									<div class="sheet-container-body">
 										<textarea name="attr_bonds" title="@{bonds}"></textarea>
 									</div>
 								</div>
-								<div class="sheet-container-box sheet-pc-flaws">
+								<div class="sheet-container-panel sheet-pc-flaws">
 									<div class="sheet-container-header">Flaws</div>
 									<div class="sheet-container-body">
 										<textarea name="attr_flaws" title="@{flaws}"></textarea>
@@ -3433,73 +3501,22 @@
 									</div>
 								</div>
 							</div>
+
+
 							<div class="sheet-container-well sheet-container-well-features">
-								<div class="sheet-container-panel sheet-pc-features">
-									<div class="sheet-container-header">Features & Traits</div>
+
+
+								<div class="sheet-container-panel sheet-pc-notes-features">
+									<div class="sheet-container-header">Additional Features & Traits</div>
 									<div class="sheet-container-body">
-										<fieldset class="repeating_traits">
-											<div class="sheet-fieldset-item">
-												<div class="sheet-checkbox-cog">
-													<input type="checkbox" name="attr_options-flag" checked="checked">
-													<span class="sheet-toggle-icon"></span>
-												</div>
-												<input type="checkbox" name="attr_options-flag" checked="checked" class="sheet-toggle" hidden>
-												<div class="sheet-toggle-checked">
-													<div class="sheet-form">
-														<div class="sheet-form-header">Edit Feature</div>
-														<div class="sheet-form-body">
-															<div class="sheet-form-group">
-																<label>Name:</label>
-																<input type="text" name="attr_name">
-															</div>
-															<div class="sheet-form-group">
-																<label>Source:</label>
-																<select name="attr_source">
-																	<option selected="selected">Racial</option>
-																	<option>Class</option>
-																	<option>Feat</option>
-																	<option>Background</option>
-																	<option>Other</option>
-																</select>
-															</div>
-															<div class="sheet-form-group">
-																<label>Source Type:</label>
-																<input type="text" name="attr_source_type">
-															</div>
-															<div class="sheet-form-group">
-																<textarea name="attr_description"></textarea>
-															</div>
-															<div class="sheet-form-group">
-																<label class="sheet-form-checkbox">
-																	<input type="checkbox" name="attr_hide_details" value="1">
-																	<span>Hide Details</span>
-																</label>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="sheet-toggle-unchecked">
-													<div class="sheet-pc-feature">
-														<button type="roll" name="roll_output" value="@{wtype}&{template:traits} @{charname_output} {{name=@{name}}} {{source=@{source}: @{source_type}}} {{description=@{description}}}">
-															<div class="sheet-pc-feature-name">
-																<span name="attr_name"></span>
-															</div>
-															<input type="hidden" name="attr_hide_details" class="sheet-field-untoggle">
-															<div class="sheet-pc-feature-details">
-																<span class="sheet-pc-feature-source">
-																	<span name="attr_source"></span>
-																	<span name="attr_source_type"></span>
-																</span>
-																<span name="attr_description"></span>
-															</div>
-														</button>
-													</div>
-												</div>
-											</div>
-										</fieldset>
+										<textarea name="attr_additional_feature_and_traits"></textarea>
 									</div>
 								</div>
+
+
 							</div>
+
+
 						</div>
 					</div>
 					<div class="sheet-tab sheet-tab-notes">
@@ -3507,25 +3524,19 @@
 						<span class="sheet-tab-label">Notes</span>
 						<div class="sheet-tab-content">
 							<div class="sheet-container-well sheet-pc-notes">
-								<div class="sheet-container-box sheet-pc-notes-features">
-									<div class="sheet-container-header">Additional Features & Traits</div>
-									<div class="sheet-container-body">
-										<textarea name="attr_additional_feature_and_traits"></textarea>
-									</div>
-								</div>
-								<div class="sheet-container-box sheet-pc-notes-backstory">
+								<div class="sheet-container-panel sheet-pc-notes-backstory">
 									<div class="sheet-container-header">Character Backstory</div>
 									<div class="sheet-container-body">
 										<textarea name="attr_character_backstory"></textarea>
 									</div>
 								</div>
-								<div class="sheet-container-box sheet-pc-notes-allies">
+								<div class="sheet-container-panel sheet-pc-notes-allies">
 									<div class="sheet-container-header">Allies & Organisations</div>
 									<div class="sheet-container-body">
 										<textarea name="attr_allies_and_organizations"></textarea>
 									</div>
 								</div>
-								<div class="sheet-container-box sheet-pc-notes-treasure">
+								<div class="sheet-container-panel sheet-pc-notes-treasure">
 									<div class="sheet-container-header">Treasure</div>
 									<div class="sheet-container-body">
 										<textarea name="attr_treasure"></textarea>
