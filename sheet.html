@@ -1286,7 +1286,7 @@
 									</div>
 									<div class="sheet-container-box sheet-pc-armor">
 										<div class="sheet-container-header">
-											<button type="roll" name="roll_defence" value="@{wtype}&{template:simple} {{rname=Defence Roll}} {{mod=@{ac}}} {{r1=[[@{d20}+@{ac}]]}} @{rtype}+@{ac}]]}} @{charname_output}">Armor Class</button>
+											<button type="roll" name="roll_defence" value="@{wtype}&{template:simple} {{rname=Defence Roll}} {{mod=@{ac}}} {{r1=[[(@{ac}-@{d20})*-1]]}} {{always=1}} {{r2=[[(@{ac}-@{d20})*-1]]}} @{charname_output}">Armor Class</button>
 										</div>
 										<div class="sheet-container-body">
 											<input type="text" name="attr_ac" title="@{ac}">
@@ -2577,7 +2577,7 @@
 								</div>
 								<div class="sheet-container-box sheet-pc-spell-dc">
 									<div class="sheet-container-header">
-										<button type="roll" name="roll_burnout" value="@{wtype}&{template:simple} {{rname=Saving Throw Attack}} {{mod=@{spell_save_dc}}} {{r1=[[@{d20}+[[@{spell_save_dc}]]]]}} {{normal=1}} @{charname_output}">Spell Save DC</button>
+										<button type="roll" name="roll_burnout" value="@{wtype}&{template:simple} {{rname=Saving Throw Attack vs. ?{Type of save|STR|DEX|CON|INT|WIS|CHA|LUCK}}} {{mod=@{spell_save_dc}}} {{r1=[[([[@{spell_save_dc}]]-@{d20})*-1]]}} {{r2=[[([[@{spell_save_dc}]]-@{d20})*-1]]}} {{always=1}} @{charname_output}">Spell Save DC</button>
 									</div>
 									<div class="sheet-container-body">
 										<span name="attr_spell_save_dc" title="@{spell_save_dc}"></span>
@@ -3969,7 +3969,7 @@
 								</div>
 								<div class="sheet-container-box sheet-pc-spell-dc">
 									<div class="sheet-container-header">
-										<button type="roll" name="roll_burnout" value="@{wtype}&{template:simple} {{rname=Saving Throw Attack}} {{mod=@{spell_save_dc}}} {{r1=[[@{d20}+[[@{spell_save_dc}]]]]}} {{normal=1}} @{charname_output}">Spell Save DC</button>
+										<button type="roll" name="roll_burnout" value="@{wtype}&{template:simple} {{rname=Saving Throw Attack vs. ?{Type of save|STR|DEX|CON|INT|WIS|CHA|LUCK}}} {{mod=@{spell_save_dc}}} {{r1=[[([[@{spell_save_dc}]]-@{d20})*-1]]}} {{r2=[[([[@{spell_save_dc}]]-@{d20})*-1]]}} {{always=1}} @{charname_output}">Spell Save DC</button>
 									</div>
 									<div class="sheet-container-body">
 										<span name="attr_spell_save_dc" title="@{spell_save_dc}"></span>
