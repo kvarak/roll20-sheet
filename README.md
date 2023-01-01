@@ -13,4 +13,7 @@ The rules this sheet tries to follow are located here: http://dnd.rigo.nu/
 - Removed the experience box
 
 ## Preview
-![preview](sheet.png)
+![preview](sheet-1.png)
+![preview](sheet-2.png)
+![preview](sheet-3.png)
+![preview](sheet-4.png)
