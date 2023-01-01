@@ -2363,14 +2363,14 @@
       .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-core .sheet-pc-attack-damage-modifier > span + span::after,
       .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-core .sheet-pc-ac-modifier > span + span::after {
         content: ")"; }
-.charsheet .sheet-darkerdungeons .sheet-list-conditions {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  justify-content: space-between;
-  list-style: none;
-  margin: 0;
-  padding: 0; }
+  .charsheet .sheet-darkerdungeons .sheet-list-conditions {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+    list-style: none;
+    margin: 0;
+    padding: 0; }
   .charsheet .sheet-darkerdungeons .sheet-list-conditions .sheet-radio {
     align-items: center;
     cursor: pointer;
@@ -2378,57 +2378,57 @@
     justify-content: center;
     line-height: 14px;
     text-align: center; }
-    .charsheet .sheet-darkerdungeons .sheet-list-conditions .sheet-radio span {
-      border-radius: 4px;
-      flex-grow: 1;
-      font-size: 11px; }
-      .charsheet .sheet-darkerdungeons .sheet-list-conditions .sheet-radio span:hover {
-        background: #e5fffb; }
-    .charsheet .sheet-darkerdungeons .sheet-list-conditions .sheet-radio input {
-      display: none; }
-    .charsheet .sheet-darkerdungeons .sheet-list-conditions .sheet-radio input[type=radio]:checked + span {
-      background: #cf0101;
-      color: white; }
-  .charsheet .sheet-darkerdungeons .sheet-list-conditions li:nth-of-type(1) input[type=radio]:checked + span {
-    background: #46cf01; }
+  .charsheet .sheet-darkerdungeons .sheet-list-conditions .sheet-radio span {
+    border-radius: 4px;
+    flex-grow: 1;
+    font-size: 11px; }
+  .charsheet .sheet-darkerdungeons .sheet-list-conditions .sheet-radio span:hover {
+    background: #e5fffb; }
+  .charsheet .sheet-darkerdungeons .sheet-list-conditions .sheet-radio input {
+    display: none; }
+  .charsheet .sheet-darkerdungeons .sheet-list-conditions .sheet-radio input[type=radio]:checked + span {
+    background: #cf0101;
+    color: white; }
   .charsheet .sheet-darkerdungeons .sheet-list-conditions li:nth-of-type(2) input[type=radio]:checked + span {
-    background: #7dcf01; }
+    background: #cf4601; }
   .charsheet .sheet-darkerdungeons .sheet-list-conditions li:nth-of-type(3) input[type=radio]:checked + span {
-    background: #b4cf01; }
+    background: #cf7d01; }
   .charsheet .sheet-darkerdungeons .sheet-list-conditions li:nth-of-type(4) input[type=radio]:checked + span {
     background: #cfb401; }
   .charsheet .sheet-darkerdungeons .sheet-list-conditions li:nth-of-type(5) input[type=radio]:checked + span {
-    background: #cf7d01; }
+    background: #b4cf01; }
   .charsheet .sheet-darkerdungeons .sheet-list-conditions li:nth-of-type(6) input[type=radio]:checked + span {
-    background: #cf4601; }
-.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-alert-warning {
-  background: #7e2d40;
-  font-size: 9px;
-  text-align: center;
-  margin-bottom: 4px;
-  color: white;
-  border-radius: 3px; }
-.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-cp .sheet-container-header,
-.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-sp .sheet-container-header,
-.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-ep .sheet-container-header,
-.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-gp .sheet-container-header,
-.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-pp .sheet-container-header,
-.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-other .sheet-container-header {
-  padding: 0; }
-.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-cp .sheet-container-header input,
-.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-sp .sheet-container-header input,
-.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-ep .sheet-container-header input,
-.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-gp .sheet-container-header input,
-.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-pp .sheet-container-header input,
-.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-other .sheet-container-header input {
-  text-align: center;
-  width: 100%;
-  border: 0;
-  padding-left: 0;
-  padding-right: 0;
-  font-size: 8px;
-  font-weight: bold;
-  background: none; }
+    background: #7dcf01; }
+  .charsheet .sheet-darkerdungeons .sheet-list-conditions li:nth-of-type(7) input[type=radio]:checked + span {
+    background: #46cf01; }
+  .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-alert-warning {
+    background: #7e2d40;
+    font-size: 9px;
+    text-align: center;
+    margin-bottom: 4px;
+    color: white;
+    border-radius: 3px; }
+  .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-cp .sheet-container-header,
+  .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-sp .sheet-container-header,
+  .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-ep .sheet-container-header,
+  .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-gp .sheet-container-header,
+  .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-pp .sheet-container-header,
+  .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-other .sheet-container-header {
+    padding: 0; }
+  .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-cp .sheet-container-header input,
+  .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-sp .sheet-container-header input,
+  .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-ep .sheet-container-header input,
+  .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-gp .sheet-container-header input,
+  .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-pp .sheet-container-header input,
+  .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-other .sheet-container-header input {
+    text-align: center;
+    width: 100%;
+    border: 0;
+    padding-left: 0;
+    padding-right: 0;
+    font-size: 8px;
+    font-weight: bold;
+    background: none; }
   .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-cp .sheet-container-header input:hover,
   .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-sp .sheet-container-header input:hover,
   .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-purse-ep .sheet-container-header input:hover,

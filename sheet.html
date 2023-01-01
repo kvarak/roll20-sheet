@@ -2179,32 +2179,8 @@
 										<ul class="sheet-list-conditions">
 											<li>
 												<label class="sheet-radio">
-													<input type="radio" name="attr_condition_health" value="0" title="@{condition_health}">
-													<span title="@{condition_health}">Robust</span>
-												</label>
-											</li>
-											<li>
-												<label class="sheet-radio">
-													<input type="radio" name="attr_condition_health" value="1" title="@{condition_health}">
-													<span title="@{condition_health}">Healthy</span>
-												</label>
-											</li>
-											<li>
-												<label class="sheet-radio">
-													<input type="radio" name="attr_condition_health" value="2" checked="checked" title="@{condition_health}">
-													<span title="@{condition_health}">Ok</span>
-												</label>
-											</li>
-											<li>
-												<label class="sheet-radio">
-													<input type="radio" name="attr_condition_health" value="3" title="@{condition_health}">
-													<span title="@{condition_health}">Hit</span>
-												</label>
-											</li>
-											<li>
-												<label class="sheet-radio">
-													<input type="radio" name="attr_condition_health" value="4" title="@{condition_health}">
-													<span title="@{condition_health}">Bloodied</span>
+													<input type="radio" name="attr_condition_health" value="6" title="@{condition_health}">
+													<span title="@{condition_health}">Critical</span>
 												</label>
 											</li>
 											<li>
@@ -2215,8 +2191,32 @@
 											</li>
 											<li>
 												<label class="sheet-radio">
-													<input type="radio" name="attr_condition_health" value="6" title="@{condition_health}">
-													<span title="@{condition_health}">Critical</span>
+													<input type="radio" name="attr_condition_health" value="4" title="@{condition_health}">
+													<span title="@{condition_health}">Bloodied</span>
+												</label>
+											</li>
+											<li>
+												<label class="sheet-radio">
+													<input type="radio" name="attr_condition_health" value="3" title="@{condition_health}">
+													<span title="@{condition_health}">Hit</span>
+												</label>
+											</li>
+											<li>
+												<label class="sheet-radio">
+													<input type="radio" name="attr_condition_health" value="2" checked="checked" title="@{condition_health}">
+													<span title="@{condition_health}">Ok</span>
+												</label>
+											</li>
+											<li>
+												<label class="sheet-radio">
+													<input type="radio" name="attr_condition_health" value="1" title="@{condition_health}">
+													<span title="@{condition_health}">Healthy</span>
+												</label>
+											</li>
+											<li>
+												<label class="sheet-radio">
+													<input type="radio" name="attr_condition_health" value="0" title="@{condition_health}">
+													<span title="@{condition_health}">Robust</span>
 												</label>
 											</li>
 										</ul>
@@ -7307,6 +7307,7 @@
 			<input type='hidden' name='attr_show_survival_conditions' value='0'>
 			<input type='hidden' name='attr_use_inventory_slots' value='1'>
 			<input type='hidden' name='attr_use_intelligent_initiative' value='1'>
+			<input type="hidden" name="attr_condition_health_max" value="6">
 			<!-- COMPENDIUM DROP CATCHERS -->
 			<input type="hidden" name="attr_drop_category" accept="Category">
 			<input type="hidden" name="attr_drop_name" accept="Name">
@@ -14370,29 +14371,33 @@
 					let hitDicePercentage = clamp((hitDiceTotal - hitDiceSpent) / hitDiceTotal, 0, 1) || 0;
 
 					if (hp >= hpMax) {
-						if (hitDicePercentage == 1) {
-							conditionHealth = 0;
-						} else if (hitDicePercentage >= 0.5) {
-							conditionHealth = 1;
-						} else {
-							conditionHealth = 2;
-						}
-					} else {
-						if (hpPercentage > 0.5) {
-							conditionHealth = 3;
-						} else if (hp == 1) {
-							conditionHealth = 6;
-						} else if (hpPercentage >= 0.25) {
-							conditionHealth = 4;
-						} else if (hpPercentage >= 0.1) {
+						conditionHealth = 0;
+					}
+					if (hitDicePercentage < 1) {
+						conditionHealth = 1;
+					}
+					if (hp < hpMax) {
+						conditionHealth = 2;
+					}
+					if (hitDicePercentage < 0.5) {
+						conditionHealth = 3;
+					}
+					if (hp < hpMax/2) {
+						conditionHealth = 4;
+					}
+					if (hp < hpMax/4) {
+						conditionHealth = 5;
+					}
+					if (hp < 10) {
+						conditionHealth = 6;
+						if (hpMax < 20 & hp >= hpMax/2) {
 							conditionHealth = 5;
-						} else {
-							conditionHealth = 6;
 						}
 					}
 
 					let update = {};
 					update["condition_health"] = conditionHealth;
+					update["condition_health_max"] = 6;
 					setAttrs(update);
 				});
 			});
