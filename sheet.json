@@ -1,11 +1,11 @@
 {
-  "html": "sheet.html",
-  "css": "sheet.css",
+  "html": "5eDarkerVarlyn.html",
+  "css": "5eDarkerVarlyn.css",
   "authors": "kvarak, Giffyglyph",
   "roll20userid": "32102",
-  "preview": "sheet.png",
+  "preview": "5eDarkerVarlyn.png",
   "compendium": "dnd5e",
-  "instructions": "Sheet based on Giffyglyph's 5e Darker Dungeon character sheet - a Varlyn-compatible variant if you will. A flexible character sheet compatible with D&D 5e and [Giffyglyph's Darker Dungeons] ruleset.\n\n* Fully drag-and-drop compatible with the [Roll20 Compendium](https://app.roll20.net/compendium/dnd5e/BookIndex).\n* Based on [Giffyglyph's Darker Dungeons](https://drive.google.com/file/d/1ufAyAnP4YTyJmOvyFQwnJZoTMTe95ETt/view?usp=sharing) character sheet.\n* [Development and further information can be found on github](https://github.com/kvarak/roll20-sheet).",
+  "instructions": "Sheet based on Giffyglyph's 5e Darker Dungeon character sheet - a Varlyn-compatible variant if you will. A flexible character sheet compatible with D&D 5e and [Giffyglyph's Darker Dungeons] ruleset.\n\n* Fully drag-and-drop compatible with the [Roll20 Compendium](https://app.roll20.net/compendium/dnd5e/BookIndex).\n* All credits go to Giffyglyph and their [Darker Dungeons](https://drive.google.com/file/d/1ufAyAnP4YTyJmOvyFQwnJZoTMTe95ETt/view?usp=sharing) rules and character sheet (their patreon is visible below for support).\n* Development and further information of this sheet can be found on [github](https://github.com/kvarak/roll20-sheet).\n* The rules this sheet tries to follow can be found on [dnd.rigo.nu](http://dnd.rigo.nu/).",
   "patreon": "https://www.patreon.com/giffyglyph",
   "useroptions": [
     {
