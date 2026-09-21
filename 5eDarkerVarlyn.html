@@ -7202,6 +7202,22 @@
 										</div>
 									</div>
 								</div>
+								<div class="sheet-container-panel sheet-pc-option-export">
+									<div class="sheet-container-header">Export</div>
+									<div class="sheet-container-body">
+										<div class="sheet-form sheet-form-borderless">
+											<div class="sheet-form-body">
+												<div class="sheet-form-group">
+													<button type="action" name="act_exportjson">Export character JSON</button>
+												</div>
+												<div class="sheet-form-group sheet-form-group-column">
+													<label>JSON Output (select all &amp; copy)</label>
+													<textarea name="attr_export_output" readonly placeholder="Click the button above to generate JSON..."></textarea>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -14404,6 +14420,631 @@
 					update["condition_health"] = conditionHealth;
 					update["condition_health_max"] = 6;
 					setAttrs(update);
+				});
+			});
+
+			// ============================================================
+			// EXPORT CHARACTER JSON  (schema version 1)
+			//
+			// Triggered by clicking the "Export character JSON" action button
+			// in the Options tab. Output is sent to Roll20 chat as one or
+			// more labelled messages. The user must copy the text manually
+			// into a .json file — sheet workers cannot write files or use
+			// browser download APIs.
+			//
+			// Output is written to attr_export_output; copy it from the textarea on the sheet.
+			// ============================================================
+
+			const EXPORT_SPELL_LEVELS = ['cantrip', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+			const EXPORT_SPELL_FIELDS = [
+				'spellname', 'spellschool', 'spellritual', 'spellcastingtime',
+				'spellrange', 'spelltarget',
+				'spellcomp_v', 'spellcomp_s', 'spellcomp_m', 'spellcomp_materials',
+				'spellconcentration', 'spellduration',
+				'spell_ability', 'innate',
+				'spelloutput', 'spellattack',
+				'spelldamage', 'spelldamagetype', 'spelldamage2', 'spelldamagetype2',
+				'spellhealing', 'spelldmgmod', 'spell_damage_progression',
+				'spellsave', 'spellsavesuccess',
+				'spellhldie', 'spellhldietype',
+			];
+
+			// Convert a raw Roll20 string to a number, or null if empty/non-numeric.
+			const parseOptionalNumber = (value) => {
+				if (value === '' || value === null || value === undefined) return null;
+				const n = Number(value);
+				return isNaN(n) ? null : n;
+			};
+
+
+			// Fetch all rows of a repeating section as an array of plain objects.
+			// sectionName: full name with 'repeating_' prefix, e.g. 'repeating_attack'
+			// fields: field names within each row (without prefix/ID)
+			// callback: function(rows) — rows is Array<{field: rawValue}>
+			const exportRepeatingSection = (sectionName, fields, callback) => {
+				getSectionIDs(sectionName, function(ids) {
+					if (!ids || ids.length === 0) { callback([]); return; }
+					const attrKeys = [];
+					ids.forEach(id => fields.forEach(f => attrKeys.push(`${sectionName}_${id}_${f}`)));
+					getAttrs(attrKeys, function(values) {
+						callback(ids.map(id => {
+							const row = {};
+							fields.forEach(f => {
+								const raw = values[`${sectionName}_${id}_${f}`];
+								row[f] = (raw === undefined) ? '' : raw;
+							});
+							return row;
+						}));
+					});
+				});
+			};
+
+			// Build the complete export object from flat attrs and repeating section data.
+			// v: flat attr values (from getAttrs); sections: { sectionName: rows[] }
+			const buildExportObject = (v, sections) => {
+				// attr_[key] -> raw string value
+				const str = key => (v[key] !== undefined ? v[key] : '');
+				// attr_[key] -> number or null
+				const num = key => parseOptionalNumber(v[key]);
+				// checkbox: true if set (Roll20 stores '0' or '' when unchecked)
+				const cbk = key => (v[key] !== '' && v[key] !== '0');
+
+				const STATS = ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma', 'luck'];
+
+				// All skills; Religion flat/type options use capital-R attr names (sheet inconsistency)
+				const ALL_SKILLS = [
+					'acrobatics', 'agriculture', 'arcana', 'architecture', 'astronomy',
+					'burglary', 'cooking', 'cosmology', 'courtier', 'engineering',
+					'geology', 'herbalism', 'history', 'investigation', 'law',
+					'leadership', 'linguistics', 'mathematics', 'medicine', 'nature',
+					'perception', 'physique', 'religion', 'sailor', 'sleight_of_hand',
+					'speechcraft', 'stealth', 'survival', 'swimming', 'underworld',
+				];
+
+				// identity
+				const identity = {
+					characterName:  str('character_name'),   // attr_character_name
+					class:          str('class'),            // attr_class
+					subclass:       str('subclass'),         // attr_subclass
+					baseLevel:      num('base_level'),       // attr_base_level
+					race:           str('race'),             // attr_race
+					subrace:        str('subrace'),          // attr_subrace
+					background:     str('background'),       // attr_background
+					alignment:      str('alignment'),        // attr_alignment
+					classDisplay:   str('class_display'),    // attr_class_display (computed)
+					raceDisplay:    str('race_display'),     // attr_race_display (computed)
+				};
+
+				// abilityScores: base value + option bonus for each stat
+				const abilityScores = {};
+				STATS.forEach(s => {
+					abilityScores[s] = {
+						base:  num(`${s}_base`),                       // attr_[stat]_base
+						bonus: parseOptionalNumber(str(`${s}_bonus`)), // attr_[stat]_bonus (options)
+					};
+				});
+
+				// savingThrows: proficiency + per-save flat mod
+				const savingThrows = {};
+				STATS.forEach(s => {
+					savingThrows[s] = {
+						proficient: cbk(`${s}_save_prof`),                    // attr_[stat]_save_prof
+						flatMod:    parseOptionalNumber(str(`${s}_save_mod`)), // attr_[stat]_save_mod
+					};
+				});
+				savingThrows.death     = { flatMod: num('death_save_mod') };   // attr_death_save_mod
+				savingThrows.globalMod = num('globalsavemod');                 // attr_globalsavemod
+
+				// skills: proficiency, linked ability, flat mod from options, expertise flag
+				const skills = {};
+				ALL_SKILLS.forEach(s => {
+					// Options tab: Religion uses capital-R attr names (sheet inconsistency)
+					const flatKey = (s === 'religion') ? 'Religion_flat' : `${s}_flat`;
+					const typeKey = (s === 'religion') ? 'Religion_type' : `${s}_type`;
+					skills[s] = {
+						proficient: cbk(`${s}_prof`),                     // attr_[skill]_prof
+						attribute:  str(`${s}_attribute`),                // attr_[skill]_attribute
+						flatMod:    parseOptionalNumber(str(flatKey)),    // attr_[skill]_flat
+						expertise:  str(typeKey) === '2',                 // attr_[skill]_type
+					};
+				});
+				skills._jackOfAllTrades      = cbk('jack_of_all_trades');  // attr_jack_of_all_trades
+				skills._passivePerceptionMod = num('passiveperceptionmod'); // attr_passiveperceptionmod
+
+				// combat: HP, hit dice, death saves, health condition
+				const combat = {
+					hp:         { current: num('hp'), max: num('hp_max'), temp: num('hp_temp') }, // attr_hp / hp_max / hp_temp
+					hitDice:    { remaining: num('hit_dice'), max: num('hit_dice_max') },          // attr_hit_dice / hit_dice_max
+					deathSaves: {
+						success1: cbk('deathsave_success1'), success2: cbk('deathsave_success2'), // attr_deathsave_success[1-3]
+						success3: cbk('deathsave_success3'),
+						fail1:    cbk('deathsave_fail1'),    fail2:    cbk('deathsave_fail2'),   // attr_deathsave_fail[1-3]
+						fail3:    cbk('deathsave_fail3'),
+					},
+					conditionHealth: num('condition_health'), // attr_condition_health
+				};
+
+				// resources: class resource, other resource, spell info
+				const resources = {
+					classResource: {
+						name:    str('class_resource_name'),  // attr_class_resource_name
+						current: num('class_resource'),       // attr_class_resource
+						max:     num('class_resource_max'),   // attr_class_resource_max
+					},
+					otherResource: {
+						name:    str('other_resource_name'),  // attr_other_resource_name
+						current: num('other_resource'),       // attr_other_resource
+						max:     num('other_resource_max'),   // attr_other_resource_max
+					},
+					spellBurnout:        str('spell_burnout'),        // attr_spell_burnout
+					spellcastingAbility: str('spellcasting_ability'), // attr_spellcasting_ability
+				};
+
+				// spellSlots: expended count + user modifier per level
+				const spellSlots = {};
+				for (let lvl = 1; lvl <= 9; lvl++) {
+					spellSlots[`level${lvl}`] = {
+						expended: num(`lvl${lvl}_slots_expended`),                // attr_lvl[n]_slots_expended
+						mod:      parseOptionalNumber(str(`lvl${lvl}_slots_mod`)), // attr_lvl[n]_slots_mod
+					};
+				}
+
+				// trackers: condition bars, fate/inspiration/training, GDD survival
+				const trackers = {
+					exhaustion:  num('exhaustion_base'), // attr_exhaustion_base
+					stress:      num('stress'),          // attr_stress
+					fate:        [cbk('fate_1'), cbk('fate_2'), cbk('fate_3')],
+					inspiration: [cbk('inspiration_1'), cbk('inspiration_2'), cbk('inspiration_3')],
+					training:    [cbk('training_1'), cbk('training_2'), cbk('training_3'), cbk('training_4'), cbk('training_5'), cbk('training_6')],
+					rations:     [cbk('ration_1'), cbk('ration_2'), cbk('ration_3'), cbk('ration_4'), cbk('ration_5')],
+					waterskin:   [cbk('waterskin_1'), cbk('waterskin_2'), cbk('waterskin_3'), cbk('waterskin_4'), cbk('waterskin_5')],
+					conditions: {
+						hunger:      num('condition_hunger'),      // attr_condition_hunger
+						thirst:      num('condition_thirst'),      // attr_condition_thirst
+						fatigue:     num('condition_fatigue'),     // attr_condition_fatigue
+						temperature: num('condition_temperature'), // attr_condition_temperature
+					},
+					stressStates: {
+						at20: cbk('stress_state_20'), at30: cbk('stress_state_30'), // attr_stress_state_[20/30/35/40]
+						at35: cbk('stress_state_35'), at40: cbk('stress_state_40'),
+					},
+				};
+
+				// character details & personality
+				const details = {
+					age:              str('character_age'),               // attr_character_age
+					ageDetail:        str('character_age_detail'),        // attr_character_age_detail
+					size:             str('size'),                        // attr_size
+					height:           str('character_height'),            // attr_character_height
+					heightDetail:     str('character_height_detail'),     // attr_character_height_detail
+					weight:           str('character_weight'),            // attr_character_weight
+					weightDetail:     str('character_weight_detail'),     // attr_character_weight_detail
+					feature:          str('character_feature'),           // attr_character_feature
+					featureDetail:    str('character_feature_detail'),    // attr_character_feature_detail
+					motivation:       str('character_motivation'),        // attr_character_motivation
+					motivationDetail: str('character_motivation_detail'), // attr_character_motivation_detail
+					habit:            str('character_habit'),             // attr_character_habit
+					habitDetail:      str('character_habit_detail'),      // attr_character_habit_detail
+					family:           str('character_family'),            // attr_character_family
+					raisedBy:         str('character_raised_by'),         // attr_character_raised_by
+					quest:            str('character_quest'),             // attr_character_quest
+					personalityTraits: str('personality_traits'),         // attr_personality_traits
+					ideals:           str('ideals'),                      // attr_ideals
+					bonds:            str('bonds'),                       // attr_bonds
+					flaws:            str('flaws'),                       // attr_flaws
+					otherProficienciesAndLanguages: str('other_proficiencies_and_languages'),
+					backstory:              str('character_backstory'),        // attr_character_backstory
+					alliesAndOrganizations: str('allies_and_organizations'),    // attr_allies_and_organizations
+					treasure:               str('treasure'),                    // attr_treasure
+				};
+
+				// options: all Options-tab settings
+				const options = {
+					class: {
+						hitDieType:          num('hitdietype'),                          // attr_hitdietype
+						carryingCapacityMod: str('carrying_capacity_mod'),              // attr_carrying_capacity_mod
+						globalMagicMod:      parseOptionalNumber(str('globalmagicmod')), // attr_globalmagicmod
+						casterLevel:         parseOptionalNumber(str('caster_level')),   // attr_caster_level
+						spellDcMod:          parseOptionalNumber(str('spell_dc_mod')),   // attr_spell_dc_mod
+						halflingLuck:        cbk('halflingluck_flag'),                   // attr_halflingluck_flag
+						arcaneFighter:       cbk('arcane_fighter'),                      // attr_arcane_fighter
+						arcaneRogue:         cbk('arcane_rogue'),                        // attr_arcane_rogue
+					},
+					multiclass: {
+						class1: { enabled: cbk('multiclass1_flag'), class: str('multiclass1'), level: parseOptionalNumber(str('multiclass1_lvl')), subclass: str('multiclass1_subclass') },
+						class2: { enabled: cbk('multiclass2_flag'), class: str('multiclass2'), level: parseOptionalNumber(str('multiclass2_lvl')), subclass: str('multiclass2_subclass') },
+						class3: { enabled: cbk('multiclass3_flag'), class: str('multiclass3'), level: parseOptionalNumber(str('multiclass3_lvl')), subclass: str('multiclass3_subclass') },
+					},
+					customClass: {
+						enabled:             cbk('custom_class'),                       // attr_custom_class
+						name:                str('cust_classname'),                     // attr_cust_classname
+						hitDieType:          num('cust_hitdietype'),                    // attr_cust_hitdietype
+						spellcastingAbility: str('cust_spellcasting_ability'),          // attr_cust_spellcasting_ability
+						spellSlots:          str('cust_spellslots'),                    // attr_cust_spellslots
+						saveProfs: {
+							strength:     cbk('cust_strength_save_prof'),
+							dexterity:    cbk('cust_dexterity_save_prof'),
+							constitution: cbk('cust_constitution_save_prof'),
+							intelligence: cbk('cust_intelligence_save_prof'),
+							wisdom:       cbk('cust_wisdom_save_prof'),
+							charisma:     cbk('cust_charisma_save_prof'),
+							luck:         cbk('cust_luck_save_prof'),
+						},
+					},
+					general: {
+						pbType:              str('pb_type'),              // attr_pb_type
+						pbCustom:            str('pb_custom'),            // attr_pb_custom
+						rtype:               str('rtype'),                // attr_rtype
+						wtype:               str('wtype'),                // attr_wtype
+						dtype:               str('dtype'),                // attr_dtype
+						coreDie:             str('core_die'),             // attr_core_die
+						charnameOutput:      str('charname_output'),      // attr_charname_output
+						levelCalculations:   str('level_calculations'),   // attr_level_calculations
+						encumberanceSetting: str('encumberance_setting'), // attr_encumberance_setting
+						simpleInventory:     str('simpleinventory'),      // attr_simpleinventory
+						simpleTraits:        str('simpletraits'),         // attr_simpletraits
+						simpleProficiencies: str('simpleproficencies'),   // attr_simpleproficencies
+						showGlobalSaveMod:   cbk('global_save_mod_flag'), showGlobalSkillMod:   cbk('global_skill_mod_flag'),
+						showGlobalAttackMod: cbk('global_attack_mod_flag'), showGlobalDamageMod: cbk('global_damage_mod_flag'),
+						showGlobalAcMod:     cbk('global_ac_mod_flag'),
+					},
+					attributes: {
+						initmod:         parseOptionalNumber(str('initmod')),       // attr_initmod
+						initiativeStyle: str('initiative_style'),                    // attr_initiative_style
+						initTiebreaker:  cbk('init_tiebreaker'),                    // attr_init_tiebreaker
+						customAcFlag:    str('custom_ac_flag'),                     // attr_custom_ac_flag (0/1/2)
+						customAcBase:    parseOptionalNumber(str('custom_ac_base')), // attr_custom_ac_base
+						customAcPart1:   str('custom_ac_part1'),                    // attr_custom_ac_part1
+						customAcPart2:   str('custom_ac_part2'),                    // attr_custom_ac_part2
+						customAcShield:  cbk('custom_ac_shield'),                   // attr_custom_ac_shield
+					},
+					gdd: {
+						showDeathFailures:      cbk('show_death_failures_flag'),    // attr_show_death_failures_flag
+						showExhaustion:         cbk('show_exhaustion_flag'),        // attr_show_exhaustion_flag
+						showStress:             cbk('show_stress_flag'),            // attr_show_stress_flag
+						showSurvivalConditions: cbk('show_survival_conditions'),   // attr_show_survival_conditions
+						useIntelligentInit:     cbk('use_intelligent_initiative'),  // attr_use_intelligent_initiative
+						useInventorySlots:      cbk('use_inventory_slots'),         // attr_use_inventory_slots
+						inventorySlotsMod:      str('inventory_slots_mod'),         // attr_inventory_slots_mod
+					},
+				};
+
+				// --- repeating section mappers (row field -> exported property) ---
+
+				const mapAttack = rows => rows.map(r => ({
+					name:        r.atkname,                                       // attr_atkname
+					hasAttack:   r.atkflag !== '' && r.atkflag !== '0',           // attr_atkflag (checkbox)
+					attackAttr:  r.atkattr_base,                                  // attr_atkattr_base
+					attackMod:   parseOptionalNumber(r.atkmod),                  // attr_atkmod
+					proficient:  r.atkprofflag !== '' && r.atkprofflag !== '0',   // attr_atkprofflag
+					range:       r.atkrange,                                      // attr_atkrange
+					magicBonus:  parseOptionalNumber(r.atkmagic),                // attr_atkmagic
+					critRange:   parseOptionalNumber(r.atkcritrange),            // attr_atkcritrange
+					damage1: {
+						enabled: r.dmgflag !== '' && r.dmgflag !== '0',            // attr_dmgflag
+						dice: r.dmgbase, attr: r.dmgattr,                         // attr_dmgbase / dmgattr
+						mod:  parseOptionalNumber(r.dmgmod),                      // attr_dmgmod
+						type: r.dmgtype, critDice: r.dmgcustcrit,                 // attr_dmgtype / dmgcustcrit
+					},
+					damage2: {
+						enabled: r.dmg2flag !== '' && r.dmg2flag !== '0',          // attr_dmg2flag
+						dice: r.dmg2base, attr: r.dmg2attr,                       // attr_dmg2base / dmg2attr
+						mod:  parseOptionalNumber(r.dmg2mod),                     // attr_dmg2mod
+						type: r.dmg2type, critDice: r.dmg2custcrit,               // attr_dmg2type / dmg2custcrit
+					},
+					save: {
+						enabled:  r.saveflag !== '' && r.saveflag !== '0',         // attr_saveflag
+						attr:     r.saveattr,  dcFormula: r.savedc,              // attr_saveattr / savedc
+						dcFlat:   parseOptionalNumber(r.saveflat),               // attr_saveflat
+						effect:   r.saveeffect,                                   // attr_saveeffect
+					},
+					ammo:        r.ammo,                                          // attr_ammo
+					description: r['atk_desc'],                                   // attr_atk_desc
+				}));
+
+				const mapResource = rows => rows.map(r => ({
+					name:   r.resourcename,                            // attr_resourcename
+					amount: parseOptionalNumber(r.resourceamount),    // attr_resourceamount
+					max:    parseOptionalNumber(r.resourcemax),       // attr_resourcemax
+				}));
+
+				const mapProficiency = rows => rows.map(r => ({
+					type: r.prof_type, // attr_prof_type
+					name: r.name,      // attr_name
+				}));
+
+				const mapTool = rows => rows.map(r => ({
+					name:      r.toolname,                          // attr_toolname
+					bonusBase: r.toolbonus_base,                    // attr_toolbonus_base
+					attrBase:  r.toolattr_base,                     // attr_toolattr_base
+					mod:       parseOptionalNumber(r.tool_mod),    // attr_tool_mod
+				}));
+
+				// Generic global modifier mapper (save / skill / attack / AC sections)
+				const mapGlobalMod = (rows, flagF, nameF, rollF) => rows.map(r => ({
+					active: r[flagF] === '1',
+					name:   r[nameF],
+					roll:   r[rollF],
+				}));
+
+				const mapDamageMod = rows => rows.map(r => ({
+					active: r.global_damage_active_flag === '1', // attr_global_damage_active_flag
+					name:   r.global_damage_name,               // attr_global_damage_name
+					damage: r.global_damage_damage,             // attr_global_damage_damage
+					type:   r.global_damage_type,               // attr_global_damage_type
+				}));
+
+				const mapAffliction = rows => rows.map(r => ({ affliction: r.affliction })); // attr_affliction
+
+				const mapEffect = rows => rows.map(r => ({
+					description: r.description,     // attr_description
+					active:      r.active === '1',  // attr_active
+				}));
+
+				const mapTrait = rows => rows.map(r => ({
+					name:        r.name,                  // attr_name
+					source:      r.source,                // attr_source
+					sourceType:  r.source_type,           // attr_source_type
+					description: r.description,           // attr_description
+					hideDetails: r.hide_details === '1',  // attr_hide_details
+				}));
+
+				const mapMemory = rows => rows.map(r => ({
+					name:        r.memory_name,         // attr_memory_name
+					description: r.memory_description, // attr_memory_description
+				}));
+
+				const mapNote = rows => rows.map(r => ({
+					name:        r.note_name,         // attr_note_name
+					description: r.note_description, // attr_note_description
+				}));
+
+				const mapOtherItem = rows => rows.map(r => ({
+					name:        r['otheritem-name'],        // attr_otheritem-name
+					description: r['otheritem-description'], // attr_otheritem-description
+				}));
+
+				const mapInventory = rows => rows.map(r => ({
+					name:          r.itemname,                          // attr_itemname
+					quantity:      parseOptionalNumber(r.itemcount),   // attr_itemcount
+					weight:        parseOptionalNumber(r.itemweight),  // attr_itemweight
+					weightFixed:   r.itemweightfixed === '1',          // attr_itemweightfixed
+					slotSize:      parseOptionalNumber(r.itemsize),    // attr_itemsize
+					slotsFixed:    r.itemslotsfixed === '1',           // attr_itemslotsfixed
+					notches:       parseOptionalNumber(r.itemnotches), // attr_itemnotches
+					quality:       r.itemquality,                      // attr_itemquality
+					properties:    r.itemproperties,                   // attr_itemproperties
+					modifiers:     r.itemmodifiers,                    // attr_itemmodifiers
+					content:       r.itemcontent,                      // attr_itemcontent
+					equipped:      r.equipped === '1',                 // attr_equipped (hidden)
+					carried:       r.carried === '1',                  // attr_carried (hidden)
+					isContainer:   r.itemcontainer === '1',            // attr_itemcontainer
+					containerType: r.itemcontainer_type,               // attr_itemcontainer_type
+				}));
+
+				const mapSpell = rows => rows.map(r => ({
+					name:        r.spellname,                                         // attr_spellname
+					school:      r.spellschool,                                       // attr_spellschool
+					ritual:      r.spellritual !== '' && r.spellritual !== '0',       // attr_spellritual
+					castingTime: r.spellcastingtime,                                  // attr_spellcastingtime
+					range:       r.spellrange,                                        // attr_spellrange
+					target:      r.spelltarget,                                       // attr_spelltarget
+					components: {
+						verbal:    r.spellcomp_v !== '' && r.spellcomp_v !== '0',      // attr_spellcomp_v
+						somatic:   r.spellcomp_s !== '' && r.spellcomp_s !== '0',      // attr_spellcomp_s
+						material:  r.spellcomp_m !== '' && r.spellcomp_m !== '0',     // attr_spellcomp_m
+						materials: r.spellcomp_materials,                              // attr_spellcomp_materials
+					},
+					concentration:      r.spellconcentration !== '' && r.spellconcentration !== '0', // attr_spellconcentration
+					duration:           r.spellduration,          // attr_spellduration
+					spellAbility:       r.spell_ability,          // attr_spell_ability
+					innate:             r.innate,                 // attr_innate
+					output:             r.spelloutput,            // attr_spelloutput
+					attackType:         r.spellattack,            // attr_spellattack
+					damage1:            r.spelldamage,            // attr_spelldamage
+					damageType1:        r.spelldamagetype,        // attr_spelldamagetype
+					damage2:            r.spelldamage2,           // attr_spelldamage2
+					damageType2:        r.spelldamagetype2,       // attr_spelldamagetype2
+					healing:            r.spellhealing,           // attr_spellhealing
+					addAbilityMod:      r.spelldmgmod === 'Yes',  // attr_spelldmgmod
+					cantripProgression: r.spell_damage_progression, // attr_spell_damage_progression
+					savingThrow:        r.spellsave,              // attr_spellsave
+					saveEffect:         r.spellsavesuccess,       // attr_spellsavesuccess
+					higherLevelDice:    r.spellhldie,             // attr_spellhldie
+					higherLevelDieType: r.spellhldietype,         // attr_spellhldietype
+				}));
+
+				const mapHpMod = rows => rows.map(r => ({
+					levels: r.levels,                   // attr_levels
+					source: r.source,                   // attr_source
+					mod:    parseOptionalNumber(r.mod), // attr_mod
+				}));
+
+				// build spells by level (level0 = cantrips)
+				const spells = {};
+				EXPORT_SPELL_LEVELS.forEach(lvl => {
+					spells[`level${lvl === 'cantrip' ? '0' : lvl}`] =
+						mapSpell(sections[`repeating_spell-${lvl}`] || []);
+				});
+
+				const s = sections;
+				return {
+					format: 'my-character-sheet',
+					schemaVersion: 1, // bump if exported field set changes
+					exportedAt: new Date().toISOString(),
+					character: {
+						identity, abilityScores, savingThrows, skills, combat,
+						resources, spellSlots, trackers, details, options,
+						attacks:              mapAttack(s['repeating_attack'] || []),
+						extraResources:       mapResource(s['repeating_resource'] || []),
+						proficiencies:        mapProficiency(s['repeating_proficiencies'] || []),
+						tools:                mapTool(s['repeating_tool'] || []),
+						globalSaveMods:       mapGlobalMod(s['repeating_savemod'] || [], 'global_save_active_flag', 'global_save_name', 'global_save_roll'),
+						globalSkillMods:      mapGlobalMod(s['repeating_skillmod'] || [], 'global_skill_active_flag', 'global_skill_name', 'global_skill_roll'),
+						globalAttackMods:     mapGlobalMod(s['repeating_tohitmod'] || [], 'global_attack_active_flag', 'global_attack_name', 'global_attack_roll'),
+						globalDamageMods:     mapDamageMod(s['repeating_damagemod'] || []),
+						globalAcMods:         mapGlobalMod(s['repeating_acmod'] || [], 'global_ac_active_flag', 'global_ac_name', 'global_ac_val'),
+						afflictions:          mapAffliction(s['repeating_afflictions'] || []),
+						effectsAndConditions: mapEffect(s['repeating_effects-conditions'] || []),
+						featuresAndTraits:    mapTrait(s['repeating_traits'] || []),
+						memories:             mapMemory(s['repeating_memories'] || []),
+						notes:                mapNote(s['repeating_notes'] || []),
+						otherItems:           mapOtherItem(s['repeating_otheritems'] || []),
+						inventory:            mapInventory(s['repeating_inventory'] || []),
+						spells,
+						hpModifiers:          mapHpMod(s['repeating_hpmod'] || []),
+					},
+				};
+			};
+
+
+
+			// EXPORT CHARACTER JSON event handler
+			on('clicked:exportjson', function() {
+				const flatAttrNames = [
+					// Identity
+					'character_name', 'class', 'subclass', 'base_level', 'race', 'subrace', 'background', 'alignment', 'class_display', 'race_display',
+					// Ability scores (base + option bonus)
+					'strength_base', 'dexterity_base', 'constitution_base', 'intelligence_base', 'wisdom_base', 'charisma_base', 'luck_base',
+					'strength_bonus', 'dexterity_bonus', 'constitution_bonus', 'intelligence_bonus', 'wisdom_bonus', 'charisma_bonus', 'luck_bonus',
+					// Saving throw profs + per-save mods
+					'strength_save_prof', 'dexterity_save_prof', 'constitution_save_prof', 'intelligence_save_prof', 'wisdom_save_prof', 'charisma_save_prof', 'luck_save_prof',
+					'strength_save_mod', 'dexterity_save_mod', 'constitution_save_mod', 'intelligence_save_mod', 'wisdom_save_mod', 'charisma_save_mod', 'luck_save_mod',
+					'death_save_mod', 'globalsavemod',
+					// Skills: prof checkbox, attribute select, flat mod, expertise type
+					'acrobatics_prof', 'acrobatics_attribute', 'acrobatics_flat', 'acrobatics_type',
+					'agriculture_prof', 'agriculture_attribute', 'agriculture_flat', 'agriculture_type',
+					'arcana_prof', 'arcana_attribute', 'arcana_flat', 'arcana_type',
+					'architecture_prof', 'architecture_attribute', 'architecture_flat', 'architecture_type',
+					'astronomy_prof', 'astronomy_attribute', 'astronomy_flat', 'astronomy_type',
+					'burglary_prof', 'burglary_attribute', 'burglary_flat', 'burglary_type',
+					'cooking_prof', 'cooking_attribute', 'cooking_flat', 'cooking_type',
+					'cosmology_prof', 'cosmology_attribute', 'cosmology_flat', 'cosmology_type',
+					'courtier_prof', 'courtier_attribute', 'courtier_flat', 'courtier_type',
+					'engineering_prof', 'engineering_attribute', 'engineering_flat', 'engineering_type',
+					'geology_prof', 'geology_attribute', 'geology_flat', 'geology_type',
+					'herbalism_prof', 'herbalism_attribute', 'herbalism_flat', 'herbalism_type',
+					'history_prof', 'history_attribute', 'history_flat', 'history_type',
+					'investigation_prof', 'investigation_attribute', 'investigation_flat', 'investigation_type',
+					'law_prof', 'law_attribute', 'law_flat', 'law_type',
+					'leadership_prof', 'leadership_attribute', 'leadership_flat', 'leadership_type',
+					'linguistics_prof', 'linguistics_attribute', 'linguistics_flat', 'linguistics_type',
+					'mathematics_prof', 'mathematics_attribute', 'mathematics_flat', 'mathematics_type',
+					'medicine_prof', 'medicine_attribute', 'medicine_flat', 'medicine_type',
+					'nature_prof', 'nature_attribute', 'nature_flat', 'nature_type',
+					'perception_prof', 'perception_attribute', 'perception_flat', 'perception_type',
+					'physique_prof', 'physique_attribute', 'physique_flat', 'physique_type',
+					// Religion: prof uses lowercase; options flat/type use capital-R attr names
+					'religion_prof', 'religion_attribute', 'Religion_flat', 'Religion_type',
+					'sailor_prof', 'sailor_attribute', 'sailor_flat', 'sailor_type',
+					'sleight_of_hand_prof', 'sleight_of_hand_attribute', 'sleight_of_hand_flat', 'sleight_of_hand_type',
+					'speechcraft_prof', 'speechcraft_attribute', 'speechcraft_flat', 'speechcraft_type',
+					'stealth_prof', 'stealth_attribute', 'stealth_flat', 'stealth_type',
+					'survival_prof', 'survival_attribute', 'survival_flat', 'survival_type',
+					'swimming_prof', 'swimming_attribute', 'swimming_flat', 'swimming_type',
+					'underworld_prof', 'underworld_attribute', 'underworld_flat', 'underworld_type',
+					'jack_of_all_trades', 'passiveperceptionmod',
+					// HP, hit dice, death saves
+					'hp', 'hp_max', 'hp_temp', 'hit_dice', 'hit_dice_max',
+					'deathsave_success1', 'deathsave_success2', 'deathsave_success3',
+					'deathsave_fail1', 'deathsave_fail2', 'deathsave_fail3', 'condition_health',
+					// Class resources + spell config
+					'class_resource_name', 'class_resource', 'class_resource_max',
+					'other_resource_name', 'other_resource', 'other_resource_max',
+					'spell_burnout', 'spellcasting_ability',
+					// Spell slot tracking (expended + user mod per level)
+					'lvl1_slots_expended', 'lvl1_slots_mod', 'lvl2_slots_expended', 'lvl2_slots_mod',
+					'lvl3_slots_expended', 'lvl3_slots_mod', 'lvl4_slots_expended', 'lvl4_slots_mod',
+					'lvl5_slots_expended', 'lvl5_slots_mod', 'lvl6_slots_expended', 'lvl6_slots_mod',
+					'lvl7_slots_expended', 'lvl7_slots_mod', 'lvl8_slots_expended', 'lvl8_slots_mod',
+					'lvl9_slots_expended', 'lvl9_slots_mod',
+					// GDD trackers
+					'exhaustion_base', 'stress',
+					'fate_1', 'fate_2', 'fate_3',
+					'inspiration_1', 'inspiration_2', 'inspiration_3',
+					'training_1', 'training_2', 'training_3', 'training_4', 'training_5', 'training_6',
+					'ration_1', 'ration_2', 'ration_3', 'ration_4', 'ration_5',
+					'waterskin_1', 'waterskin_2', 'waterskin_3', 'waterskin_4', 'waterskin_5',
+					'condition_hunger', 'condition_thirst', 'condition_fatigue', 'condition_temperature',
+					'stress_state_20', 'stress_state_30', 'stress_state_35', 'stress_state_40',
+					// Character details
+					'character_age', 'character_age_detail', 'size',
+					'character_height', 'character_height_detail', 'character_weight', 'character_weight_detail',
+					'character_feature', 'character_feature_detail',
+					'character_motivation', 'character_motivation_detail',
+					'character_habit', 'character_habit_detail',
+					'character_family', 'character_raised_by', 'character_quest',
+					'personality_traits', 'ideals', 'bonds', 'flaws', 'other_proficiencies_and_languages',
+					// Notes tab
+					'character_backstory', 'allies_and_organizations', 'treasure',
+					// Options — Class
+					'hitdietype', 'carrying_capacity_mod', 'globalmagicmod', 'caster_level', 'spell_dc_mod',
+					'halflingluck_flag', 'arcane_fighter', 'arcane_rogue',
+					// Options — Multiclass
+					'multiclass1_flag', 'multiclass1', 'multiclass1_lvl', 'multiclass1_subclass',
+					'multiclass2_flag', 'multiclass2', 'multiclass2_lvl', 'multiclass2_subclass',
+					'multiclass3_flag', 'multiclass3', 'multiclass3_lvl', 'multiclass3_subclass',
+					// Options — Custom Class
+					'custom_class', 'cust_classname', 'cust_hitdietype', 'cust_spellcasting_ability', 'cust_spellslots',
+					'cust_strength_save_prof', 'cust_dexterity_save_prof', 'cust_constitution_save_prof',
+					'cust_intelligence_save_prof', 'cust_wisdom_save_prof', 'cust_charisma_save_prof', 'cust_luck_save_prof',
+					// Options — General
+					'rtype', 'wtype', 'dtype', 'core_die', 'pb_type', 'pb_custom',
+					'global_save_mod_flag', 'global_skill_mod_flag', 'global_attack_mod_flag', 'global_damage_mod_flag', 'global_ac_mod_flag',
+					'charname_output', 'level_calculations', 'encumberance_setting', 'simpleinventory', 'simpletraits', 'simpleproficencies',
+					// Options — Attributes
+					'initmod', 'initiative_style', 'init_tiebreaker',
+					'custom_ac_flag', 'custom_ac_base', 'custom_ac_part1', 'custom_ac_part2', 'custom_ac_shield',
+					// Options — GDD
+					'show_death_failures_flag', 'show_exhaustion_flag', 'show_stress_flag',
+					'show_survival_conditions', 'use_intelligent_initiative', 'use_inventory_slots', 'inventory_slots_mod',
+				];
+
+				// All PC repeating sections (NPC sections excluded from export)
+				const SECTION_DEFS = [
+					{ name: 'repeating_attack', fields: ['atkname','atkflag','atkattr_base','atkmod','atkprofflag','atkrange','atkmagic','atkcritrange','dmgflag','dmgbase','dmgattr','dmgmod','dmgtype','dmgcustcrit','dmg2flag','dmg2base','dmg2attr','dmg2mod','dmg2type','dmg2custcrit','saveflag','saveattr','savedc','saveflat','saveeffect','ammo','atk_desc'] },
+					{ name: 'repeating_resource',      fields: ['resourcename','resourceamount','resourcemax'] },
+					{ name: 'repeating_proficiencies', fields: ['prof_type','name'] },
+					{ name: 'repeating_tool',          fields: ['toolname','toolbonus_base','toolattr_base','tool_mod'] },
+					{ name: 'repeating_savemod',       fields: ['global_save_active_flag','global_save_name','global_save_roll'] },
+					{ name: 'repeating_skillmod',      fields: ['global_skill_active_flag','global_skill_name','global_skill_roll'] },
+					{ name: 'repeating_tohitmod',      fields: ['global_attack_active_flag','global_attack_name','global_attack_roll'] },
+					{ name: 'repeating_damagemod',     fields: ['global_damage_active_flag','global_damage_name','global_damage_damage','global_damage_type'] },
+					{ name: 'repeating_acmod',         fields: ['global_ac_active_flag','global_ac_name','global_ac_val'] },
+					{ name: 'repeating_afflictions',   fields: ['affliction'] },
+					{ name: 'repeating_effects-conditions', fields: ['description','active'] },
+					{ name: 'repeating_traits',        fields: ['name','source','source_type','description','hide_details'] },
+					{ name: 'repeating_memories',      fields: ['memory_name','memory_description'] },
+					{ name: 'repeating_notes',         fields: ['note_name','note_description'] },
+					{ name: 'repeating_otheritems',    fields: ['otheritem-name','otheritem-description'] },
+					{ name: 'repeating_inventory',     fields: ['itemname','itemcount','itemweight','itemweightfixed','itemsize','itemslotsfixed','itemnotches','itemquality','itemproperties','itemmodifiers','itemcontent','equipped','carried','itemcontainer','itemcontainer_type'] },
+					...EXPORT_SPELL_LEVELS.map(lvl => ({ name: `repeating_spell-${lvl}`, fields: EXPORT_SPELL_FIELDS })),
+					{ name: 'repeating_hpmod',         fields: ['levels','source','mod'] },
+				];
+
+				getAttrs(flatAttrNames, function(v) {
+					const sections = {};
+					let idx = 0;
+
+					// Collect repeating sections one at a time (no Promises in sheet workers)
+					function collectNext() {
+						if (idx >= SECTION_DEFS.length) { finalize(); return; }
+						const def = SECTION_DEFS[idx++];
+						exportRepeatingSection(def.name, def.fields, function(rows) {
+							sections[def.name] = rows;
+							collectNext();
+						});
+					}
+
+					function finalize() {
+						const exportObj = buildExportObject(v, sections);
+						const json = JSON.stringify(exportObj, null, 2);
+						// Write to the textarea on the sheet; sendChat is not available in sheet workers
+						setAttrs({ export_output: json });
+					}
+
+					collectNext();
 				});
 			});
 
