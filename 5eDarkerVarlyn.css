@@ -901,6 +901,14 @@
   border: 0px;
   background-color: transparent;
   font-size: 12px; }
+.sheet-rolltemplate-simple .sheet-emptymod span {
+  font-weight: normal !important;
+  font-size: 10px !important;
+  opacity: 0.7 !important; }
+.sheet-rolltemplate-simple .sheet-emptymod span span {
+  font-weight: normal !important;
+  font-size: 10px !important;
+  opacity: 0.7 !important; }
 .sheet-rolltemplate-simple .inlinerollresult.fullcrit,
 .sheet-rolltemplate-atk .inlinerollresult.fullcrit,
 .sheet-rolltemplate-atkdmg .inlinerollresult.fullcrit,

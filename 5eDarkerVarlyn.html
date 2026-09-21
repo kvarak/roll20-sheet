@@ -1286,10 +1286,11 @@
 									</div>
 									<div class="sheet-container-box sheet-pc-armor">
 										<div class="sheet-container-header">
-											<button type="roll" name="roll_defence" value="@{wtype}&{template:simple} {{rname=Defence Roll}} {{mod=@{ac}}} {{r1=[[(@{d20}-@{ac})*-1]]}} {{always=1}} {{r2=[[(@{d20}-@{ac})*-1]]}} @{charname_output}">Armor Class</button>
+											<button type="roll" name="roll_defence" value="@{wtype}&{template:simple} {{rname=Defence Roll}} {{mod=@{ac}}} {{r1=[[(@{d20}-@{ac})*-1]]}} {{always=1}} {{r2=[[(@{d20}-@{ac})*-1]]}} {{emptymod=@{global_ac_mods_empty_text}}} @{charname_output}">Armor Class</button>
 										</div>
 										<div class="sheet-container-body">
 											<input type="text" name="attr_ac" title="@{ac}">
+											<input type="hidden" name="attr_global_ac_mods_empty_text" value="">
 										</div>
 									</div>
 									<div class="sheet-container-box sheet-pc-initiative">
@@ -8188,6 +8189,11 @@
 						<div class="label">
 							<span>{{rname}}{{#mod}} <span>({{mod}})</span>{{/mod}}</span>
 						</div>
+						{{#emptymod}}
+							<div class="label sheet-emptymod">
+								<span>{{emptymod}}</span>
+							</div>
+						{{/emptymod}}
 						{{#charname}}
 							<div class="charname">
 								<span>{{charname}}</span>
@@ -12296,6 +12302,7 @@
 							_.each(acidarray, function(currentID, i) {
 								ac_attrs.push("repeating_acmod_" + currentID + "_global_ac_val");
 								ac_attrs.push("repeating_acmod_" + currentID + "_global_ac_active_flag");
+								ac_attrs.push("repeating_acmod_" + currentID + "_global_ac_name");
 							});
 							getSectionIDs("repeating_inventory", function(idarray) {
 								_.each(idarray, function(currentID, i) {
@@ -12313,11 +12320,19 @@
 										custom_total = base + part1 + part2;
 									}
 									var globalacmod = 0;
+									var globalacmodempty = [];
 									_.each(acidarray, function(currentID, i) {
 										if (b["repeating_acmod_" + currentID + "_global_ac_active_flag"] == "1") {
-											globalacmod += parseInt(b["repeating_acmod_" + currentID + "_global_ac_val"], 10);
+											var val = b["repeating_acmod_" + currentID + "_global_ac_val"];
+											var name = b["repeating_acmod_" + currentID + "_global_ac_name"];
+											if (!val || val === "") {
+												if (name) globalacmodempty.push(name);
+											} else {
+												globalacmod += parseInt(val, 10);
+											}
 										}
 									});
+									update["global_ac_mods_empty_text"] = globalacmodempty.length > 0 ? globalacmodempty.join(", ") : "";
 									var dexmod = +b["dexterity_mod"];
 									var total = 10 + dexmod;
 									var armorcount = 0;
