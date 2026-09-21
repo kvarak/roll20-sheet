@@ -2577,7 +2577,7 @@
 								</div>
 								<div class="sheet-container-box sheet-pc-spell-dc">
 									<div class="sheet-container-header">
-										<button type="roll" name="roll_burnout" value="@{wtype}&{template:simple} {{rname=Saving Throw Attack vs. ?{Type of save|STR|DEX|CON|INT|WIS|CHA|LUCK}}} {{mod=@{spell_save_dc}}} {{r1=[[([[@{d20}-@{spell_save_dc}]])*-1]]}} {{r2=[[([[@{d20}-@{spell_save_dc}]])*-1]]}} {{always=1}} @{charname_output}">Spell Save DC</button>
+										<button type="roll" name="roll_burnout" value="@{wtype}&{template:simple} {{rname=Saving Throw Attack vs. ?{Type of save|STR|DEX|CON|INT|WIS|CHA|LUCK}}} {{mod=@{spell_save_dc}}} {{r1=[[(@{d20}-@{spell_save_dc})*-1]]}} {{r2=[[(@{d20}-@{spell_save_dc})*-1]]}} {{always=1}} @{charname_output}">Spell Save DC</button>
 									</div>
 									<div class="sheet-container-body">
 										<span name="attr_spell_save_dc" title="@{spell_save_dc}"></span>
