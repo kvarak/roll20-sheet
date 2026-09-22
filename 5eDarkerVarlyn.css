@@ -1498,7 +1498,7 @@
 .charsheet .sheet-darkerdungeons .sheet-form-fieldset-npc-saves .sheet-form-fieldset-body {
   display: grid;
   grid-column-gap: 10px;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; }
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr; }
   .charsheet .sheet-darkerdungeons .sheet-form-fieldset-npc-attributes .sheet-form-fieldset-body .sheet-form-group,
   .charsheet .sheet-darkerdungeons .sheet-form-fieldset-npc-saves .sheet-form-fieldset-body .sheet-form-group {
     align-items: center;
@@ -1513,7 +1513,7 @@
   grid-column-gap: 10px;
   grid-row-gap: 2.5px;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr; }
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; }
   .charsheet .sheet-darkerdungeons .sheet-form-fieldset-npc-skills .sheet-form-fieldset-body .sheet-form-group {
     margin: 0; }
 .charsheet .sheet-darkerdungeons .sheet-section-npc {

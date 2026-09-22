@@ -8168,6 +8168,31 @@
 		</div>
 
 		<script type="text/worker">
+			// Initialize NPC toggle to PC mode by default if not set
+			on("sheet:opened", function() {
+				getAttrs(["npc"], function(v) {
+					if (!v.npc || v.npc === "") {
+						setAttrs({ npc: "0" });
+					}
+				});
+			});
+
+			// Handle NPC checkbox from General Options - ensure the hidden field tracks it properly
+			// Roll20 checkboxes set value="1" when checked, empty when unchecked
+			on("change:npc", function(eventinfo) {
+				if (eventinfo.sourceType === "sheetworker") {
+					return;
+				}
+				getAttrs(["npc"], function(v) {
+					// When checkbox is checked in General Options, Roll20 sets it to "1"
+					// We need to ensure unchecked state is "0" for the CSS selectors to work
+					let newValue = (v.npc && v.npc !== "0") ? "1" : "0";
+					if (v.npc !== newValue) {
+						setAttrs({ npc: newValue });
+					}
+				});
+			});
+
 			on("sheet:compendium-drop", function() {
 				getAttrs(["hp_max", "npc_senses", "token_size", "cd_bar1_v", "cd_bar1_m", "cd_bar1_l", "cd_bar2_v", "cd_bar2_m", "cd_bar2_l", "cd_bar3_v", "cd_bar3_m", "cd_bar3_l"], function(v) {
 
