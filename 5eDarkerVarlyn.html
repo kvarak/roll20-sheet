@@ -2981,99 +2981,6 @@
 								</div>
 							</div>
 							<div class="sheet-container-effects">
-								<input type="hidden" name="attr_show_stress_flag" value="0" class="sheet-field-toggle">
-								<div class="sheet-container-well sheet-container-well-stress">
-									<div class="sheet-container-box sheet-pc-stress">
-										<div class="sheet-container-header">Stress</div>
-										<div class="sheet-container-body">
-											<span name="attr_stress_max" class="sheet-calculated sheet-hidden">40</span>
-											<input type="text" name="attr_stress" title="@{stress}" value="0">
-										</div>
-									</div>
-									<div class="sheet-container-panel sheet-pc-stress-levels">
-										<div class="sheet-container-header">Stress Levels</div>
-										<div class="sheet-container-body">
-											<ul>
-												<li>
-													<label class="sheet-checkbox">
-														<input type="checkbox" name="attr_stress_state_20" value="1" title="@{stress_state_20}">
-														<span title="@{stress_state_20}"><strong>20:</strong> Affliction</span>
-													</label>
-												</li>
-												<li>
-													<label class="sheet-checkbox">
-														<input type="checkbox" name="attr_stress_state_30" value="1" title="@{stress_state_30}">
-														<span title="@{stress_state_30}"><strong>30:</strong> Affliction</span>
-													</label>
-												</li>
-												<li>
-													<label class="sheet-checkbox">
-														<input type="checkbox" name="attr_stress_state_35" value="1" title="@{stress_state_35}">
-														<span title="@{stress_state_35}"><strong>35:</strong> Affliction</span>
-													</label>
-												</li>
-												<li>
-													<label class="sheet-checkbox">
-														<input type="checkbox" name="attr_stress_state_40" value="1" title="@{stress_state_40}">
-														<span title="@{stress_state_40}"><strong>40:</strong> Breakpoint</span>
-													</label>
-												</li>
-											</ul>
-										</div>
-									</div>
-									<div class="sheet-container-panel sheet-pc-afflictions">
-										<div class="sheet-container-header">Afflictions</div>
-										<div class="sheet-container-body">
-											<div class="sheet-container-body-header">
-												<span>Affliction</span>
-												<span>Effect</span>
-											</div>
-											<fieldset class="repeating_afflictions">
-												<div class="sheet-fieldset-item">
-													<div class="sheet-checkbox-cog">
-														<input type="checkbox" name="attr_options-flag" checked="checked"><span></span>
-														<span class="sheet-toggle-icon"></span>
-													</div>
-													<input type="checkbox" name="attr_options-flag" checked="checked" class="sheet-toggle" hidden>
-													<div class="sheet-toggle-checked">
-														<div class="sheet-form">
-															<div class="sheet-form-header">Edit Affliction</div>
-															<div class="sheet-form-body">
-																<div class="sheet-form-group">
-																	<select name="attr_affliction">
-																		<option value="Acute: Advantage on INT checks/saves">Acute</option>
-																		<option value="Anxiety: Disadvantage on Stress checks">Anxiety</option>
-																		<option value="Courageous: Advantage on CHA checks/saves">Courageous</option>
-																		<option value="Fearful: Disadvantage on WIS checks/saves">Fearful</option>
-																		<option value="Focused: +2 to all attack rolls">Focused</option>
-																		<option value="Hopelessness: Disadvantage on STR checks/saves">Hopelessness</option>
-																		<option value="Hypochondria: Hit point maximum is halved">Hypochondria</option>
-																		<option value="Irrational: Disadvantage on INT checks/saves">Irrational</option>
-																		<option value="Lethargic: +1 exhaustion until removed">Lethargic</option>
-																		<option value="Mania: Disadvantage on attack rolls">Mania</option>
-																		<option value="Masochistic: Disadvantage on CON checks/saves">Masochistic</option>
-																		<option value="Narcissistic: Disadvantage on ability checks">Narcissistic</option>
-																		<option value="Panic: Disadvantage on DEX checks/saves">Panic</option>
-																		<option value="Paranoid: Speed is halved">Paranoid</option>
-																		<option value="Perceptive: Advantage on WIS checks/saves">Perceptive</option>
-																		<option value="Powerful: +2 to all damage rolls">Powerful</option>
-																		<option value="Selfish: Disadvantage on CHA checks/saves">Selfish</option>
-																		<option value="Stalwart: +2 AC">Stalwart</option>
-																	</select>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div class="sheet-toggle-unchecked">
-														<div class="sheet-pc-affliction">
-															<span name="attr_affliction"></span>
-														</div>
-													</div>
-												</div>
-											</fieldset>
-										</div>
-									</div>
-								</div>
 								<div class="sheet-container-well sheet-container-well-effects">
 
 									<div class="sheet-container-panel sheet-pc-exhaustion-details">
@@ -6725,12 +6632,6 @@
 										<div class="sheet-form sheet-form-borderless">
 											<div class="sheet-form-body">
 												<div class="sheet-form-group">
-													<label class="sheet-form-checkbox" title="@{show_stress_flag}">
-														<input type="checkbox" name="attr_show_stress_flag" value="1">
-														<span>Show Stress & Afflictions</span>
-													</label>
-												</div>
-												<div class="sheet-form-group">
 													<label class="sheet-form-checkbox" title="@{show_survival_conditions}">
 														<input type="checkbox" name="attr_show_survival_conditions" value="1">
 														<span>Show Survival Conditions</span>
@@ -7312,7 +7213,6 @@
 			<input type='hidden' name='attr_lvl9_slots_total' value='0'>
 
 
-			<input type='hidden' name='attr_show_stress_flag' value='0'>
 			<input type='hidden' name='attr_show_survival_conditions' value='0'>
 			<input type='hidden' name='attr_use_inventory_slots' value='0'>
 			<input type='hidden' name='attr_use_intelligent_initiative' value='1'>
@@ -14727,7 +14627,6 @@
 					},
 					gdd: {
 
-						showStress:             cbk('show_stress_flag'),            // attr_show_stress_flag
 						showSurvivalConditions: cbk('show_survival_conditions'),   // attr_show_survival_conditions
 						useIntelligentInit:     cbk('use_intelligent_initiative'),  // attr_use_intelligent_initiative
 						useInventorySlots:      cbk('use_inventory_slots'),         // attr_use_inventory_slots
@@ -15022,7 +14921,6 @@
 					'initmod', 'initiative_style', 'init_tiebreaker',
 					'custom_ac_flag', 'custom_ac_base', 'custom_ac_part1', 'custom_ac_part2', 'custom_ac_shield',
 					// Options — GDD
-					'show_stress_flag',
 					'show_survival_conditions', 'use_intelligent_initiative', 'use_inventory_slots', 'inventory_slots_mod',
 				];
 
