@@ -14377,6 +14377,7 @@
 				'spellhealing', 'spelldmgmod', 'spell_damage_progression',
 				'spellsave', 'spellsavesuccess',
 				'spellhldie', 'spellhldietype',
+				'spelldescription', 'spellathigherlevels',
 			];
 
 			// Convert a raw Roll20 string to a number, or null if empty/non-numeric.
@@ -14780,6 +14781,8 @@
 					saveEffect:         r.spellsavesuccess,       // attr_spellsavesuccess
 					higherLevelDice:    r.spellhldie,             // attr_spellhldie
 					higherLevelDieType: r.spellhldietype,         // attr_spellhldietype
+					description:        r.spelldescription,       // attr_spelldescription
+					atHigherLevels:     r.spellathigherlevels,   // attr_spellathigherlevels
 				}));
 
 				const mapHpMod = rows => rows.map(r => ({
