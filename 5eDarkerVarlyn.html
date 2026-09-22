@@ -3452,58 +3452,6 @@
 						<input type="radio" name="attr_tab" value="equipment">
 						<span class="sheet-tab-label">Equipment</span>
 						<div class="sheet-tab-content">
-							<div class="sheet-container-well sheet-container-well-equipment-supplies">
-								<div class="sheet-container-bar sheet-pc-rations">
-									<div class="sheet-container-header">Rations</div>
-									<div class="sheet-container-body">
-										<div class="sheet-checkbox-image">
-											<input type="checkbox" name="attr_ration_1" title="@{ration_1}">
-											<span></span>
-										</div>
-										<div class="sheet-checkbox-image">
-											<input type="checkbox" name="attr_ration_2" title="@{ration_2}">
-											<span></span>
-										</div>
-										<div class="sheet-checkbox-image">
-											<input type="checkbox" name="attr_ration_3" title="@{ration_3}">
-											<span></span>
-										</div>
-										<div class="sheet-checkbox-image">
-											<input type="checkbox" name="attr_ration_4" title="@{ration_4}">
-											<span></span>
-										</div>
-										<div class="sheet-checkbox-image">
-											<input type="checkbox" name="attr_ration_5" title="@{ration_5}">
-											<span></span>
-										</div>
-									</div>
-								</div>
-								<div class="sheet-container-bar sheet-pc-water">
-									<div class="sheet-container-header">Waterskin</div>
-									<div class="sheet-container-body">
-										<div class="sheet-checkbox-image">
-											<input type="checkbox" name="attr_waterskin_1" title="@{waterskin_1}">
-											<span></span>
-										</div>
-										<div class="sheet-checkbox-image">
-											<input type="checkbox" name="attr_waterskin_2" title="@{waterskin_2}">
-											<span></span>
-										</div>
-										<div class="sheet-checkbox-image">
-											<input type="checkbox" name="attr_waterskin_3" title="@{waterskin_3}">
-											<span></span>
-										</div>
-										<div class="sheet-checkbox-image">
-											<input type="checkbox" name="attr_waterskin_4" title="@{waterskin_4}">
-											<span></span>
-										</div>
-										<div class="sheet-checkbox-image">
-											<input type="checkbox" name="attr_waterskin_5" title="@{waterskin_5}">
-											<span></span>
-										</div>
-									</div>
-								</div>
-							</div>
 							<div class="sheet-container-well sheet-container-well-equipment-purse">
 								<div class="sheet-container-bar sheet-pc-purse-cp">
 									<div class="sheet-container-header">
@@ -3598,13 +3546,24 @@
 										<div class="sheet-pc-encumbrance-indicator" name="attr_encumberance"></div>
 									</div>
 								</div>
-								<div class="sheet-pc-carrying-status">
-									<input type="hidden" class="sheet-pc-encumberance" name="attr_encumberance">
-									<span class="sheet-pc-unencumbered">Unencumbered</span>
-									<span class="sheet-pc-encumbered">Encumbered</span>
-									<span class="sheet-pc-heavily">Heavily encumbered</span>
-									<span class="sheet-pc-immobile">Immobile</span>
-									<span class="sheet-pc-over">Over carrying capacity</span>
+								<div class="sheet-pc-encumbrance-effects">
+									<div class="sheet-container-header">Encumbrance Effects</div>
+										<div class="sheet-container-body">
+											<ul>
+												<li>
+													<strong class="sheet-pc-encumbrance-label sheet-pc-encumbered-label">Encumbered:</strong>
+													<span>Speed reduced by 1/3. Disadv. on Acrobatics.</span>
+												</li>
+												<li>
+													<strong class="sheet-pc-encumbrance-label sheet-pc-heavily-label">Heavily Encumbered:</strong>
+													<span>Speed reduced by 2/3. Disadv. on Ability Checks, Attack Rolls and Str/Dex/Con Saving Throws.</span>
+												</li>
+												<li>
+													<strong class="sheet-pc-encumbrance-label sheet-pc-immobile-label">Immobile:</strong>
+													<span>Cannot move.</span>
+												</li>
+											</ul>
+									</div>
 								</div>
 							</div>
 							<div class="sheet-container-well sheet-container-well-equipment-general">

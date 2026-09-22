@@ -2516,23 +2516,16 @@
 .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment > input[type="radio"]:checked ~ .sheet-tab-content {
   display: grid;
   grid-template-columns: auto 262.5px;
-  grid-template-rows: 85px 120px 130px auto;
+  grid-template-rows: 120px 260px auto;
   grid-column-gap: 5px;
   grid-row-gap: 5px;
-  grid-template-areas: "equipment supplies"
- "equipment purse"
+  grid-template-areas: "equipment purse"
  "equipment encumberance"
  "equipment general"; }
 .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-container-well-equipment {
   grid-area: equipment;
   display: grid; }
-.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-container-well-equipment-supplies {
-  grid-area: supplies;
-  display: grid;
-  grid-template-rows: repeat(2, 30px);
-  grid-row-gap: 5px;
-  grid-template-areas: "rations"
- "water"; }
+
 .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-container-well-equipment-purse {
   grid-area: purse;
   display: grid;
@@ -2547,8 +2540,85 @@
 .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-container-well-equipment-encumberance {
   grid-area: encumberance;
   display: grid;
-  grid-template-rows: 65px auto;
+  grid-template-rows: 65px auto auto;
   grid-row-gap: 5px; }
+.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-encumbrance-effects {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-row-gap: 0;
+  min-height: 120px;
+  min-width: 0;
+  position: relative;
+  z-index: 0; }
+  .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-encumbrance-effects::before {
+    border-image: url("https://raw.githubusercontent.com/Roll20/roll20-character-sheets/master/5e%20Darker%20Dungeons/img/sheet-box-border.png") 50 50 50 50 fill stretch;
+    border-style: solid;
+    border-width: 15px 15px;
+    box-sizing: border-box;
+    content: '';
+    display: block;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: -1; }
+.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-encumbrance-effects .sheet-container-header {
+  border-bottom: 2px solid #202020;
+  color: #202020;
+  font-size: 8px;
+  font-weight: bold;
+  line-height: 14px;
+  margin-left: 2px;
+  margin-right: 2px;
+  padding-top: 4px;
+  text-align: center;
+  text-transform: uppercase; }
+.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-encumbrance-effects .sheet-container-body {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  margin-bottom: 2px;
+  overflow: auto;
+  padding: 5px 10px;
+  font-size: 10px;
+  line-height: 1.3;
+  color: #202020; }
+.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-encumbrance-effects ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px; }
+.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-encumbrance-effects li {
+  margin: 0;
+  padding: 0;
+  font-size: 10px;
+  line-height: 1.3;
+  color: #202020; }
+.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-encumbrance-effects li:last-child {
+  margin-bottom: 0; }
+.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-encumbrance-label {
+  display: inline-block;
+  font-weight: bold;
+  font-size: 10px;
+  padding: 1px 4px;
+  border-radius: 2px;
+  color: white;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  margin-right: 4px; }
+.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-unencumbered-label {
+  background: #b4cf01; }
+.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-encumbered-label {
+  background: #cfb401; }
+.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-heavily-label {
+  background: #cf7d01; }
+.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-immobile-label {
+  background: #cf4601; }
+.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-over-label {
+  background: #8b0000; }
 .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-container-well-equipment-general {
   grid-area: general;
   display: grid;
@@ -2562,6 +2632,10 @@
     padding: 3px 5px;
     margin-right: 3px;
     border-radius: 3px; }
+.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-core .sheet-pc-rations {
+  display: grid;
+  grid-template-rows: repeat(5, 30px);
+  grid-row-gap: 5px; }
 .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-rations {
   grid-area: rations; }
 .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-equipment .sheet-pc-water {
