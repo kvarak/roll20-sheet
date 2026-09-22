@@ -3581,6 +3581,23 @@
 										<span>Maximum</span>
 									</div>
 								</div>
+								<div class="sheet-pc-encumbrance-visual">
+									<div class="sheet-pc-encumbrance-bar">
+										<div class="sheet-pc-encumbrance-section sheet-pc-encumbrance-section-1">
+											<span name="attr_not_encumbered_threshold">0</span>
+										</div>
+										<div class="sheet-pc-encumbrance-section sheet-pc-encumbrance-section-2">
+											<span name="attr_encumbered_threshold">0</span>
+										</div>
+										<div class="sheet-pc-encumbrance-section sheet-pc-encumbrance-section-3">
+											<span name="attr_heavily_encumbered_threshold">0</span>
+										</div>
+										<div class="sheet-pc-encumbrance-section sheet-pc-encumbrance-section-4">
+											<span name="attr_immobile_threshold">0</span>
+										</div>
+										<div class="sheet-pc-encumbrance-indicator" name="attr_encumberance"></div>
+									</div>
+								</div>
 								<div class="sheet-pc-carrying-status">
 									<input type="hidden" class="sheet-pc-encumberance" name="attr_encumberance">
 									<span class="sheet-pc-unencumbered">Unencumbered</span>
@@ -3790,8 +3807,6 @@
 																<span>Item Name</span>
 																<span>Quantity</span>
 																<span>Weight</span>
-																<span>Slots</span>
-																<span>Notches</span>
 															</div>
 															<div class="sheet-pc-item-content">
 																<span class="sheet-pc-item-name">
@@ -3808,12 +3823,6 @@
 																	<input type="text" name="attr_itemweight">
 																	<span name="attr_itemweight"></span>
 																</span>
-																<span class="sheet-pc-item-slots">
-																	<input type="text" name="attr_itemsize">
-																</span>
-																<span class="sheet-pc-item-notches">
-																	<input type="text" name="attr_itemnotches">
-																</span>
 															</div>
 														</div>
 													</div>
@@ -3824,22 +3833,11 @@
 															<input type="hidden" name="attr_carried" value="1" class="sheet-field-toggle">
 															<span class="sheet-pc-item-carried"><strong>C</strong></span>
 															<span name="attr_itemname"></span>
-															<span class="sheet-pc-equipment-container-slots">
-																(
-																<span name="attr_itemcontainer_type"></span>
-																<input type="hidden" name="attr_itemcontainer_slots" class="sheet-field-toggle">
-																<span>· capacity <span name="attr_itemcontainer_slots"></span></span>
-																<input type="hidden" name="attr_itemcontainer_slots_modifier" class="sheet-field-toggle">
-																<span>· extra slots <span name="attr_itemcontainer_slots_modifier"></span></span>
-																)
-															</span>
 														</div>
 														<div class="sheet-pc-equipment-container-footer">
 															<span>Item Name</span>
 															<span>Quantity</span>
 															<span>Weight</span>
-															<span>Slots</span>
-															<span>Notches</span>
 														</div>
 													</div>
 												</div>
@@ -12204,6 +12202,11 @@
 								update["encumberance"] = " ";
 							}
 						}
+
+						// Calculate and set weight thresholds for the encumbrance bar
+						update["encumbered_threshold"] = Math.round(str * 5 * 100) / 100;
+						update["heavily_encumbered_threshold"] = Math.round(str * 10 * 100) / 100;
+						update["immobile_threshold"] = Math.round(str * 15 * 100) / 100;
 
 						setAttrs(update, {
 							silent: true
