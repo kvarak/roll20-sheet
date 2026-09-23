@@ -1970,8 +1970,8 @@
 																<label>Proficiency Bonus:</label>
 																<select name="attr_toolbonus_base">
 																	<option value="(@{pb})" selected="selected">PROFICIENT</option>
-																	<option value="(@{pb}*2)">EXPERTISE</option>
-																	<option value="(floor(@{pb}/2))">JACK OF ALL TRADES</option>
+																	<!-- <option value="(@{pb}*2)">EXPERTISE</option> -->
+																	<!-- <option value="(floor(@{pb}/2))">JACK OF ALL TRADES</option> -->
 																</select>
 															</div>
 															<div class="sheet-form-group">
@@ -1984,7 +1984,8 @@
 																	<option value="@{wisdom_mod}">Wis</option>
 																	<option value="@{charisma_mod}">Cha</option>
 																	<option value="@{luck_mod}">Lck</option>
-																	<option value="?{Attribute?|Strength,@{strength_mod}|Dexterity,@{dexterity_mod}|Constitution,@{constitution_mod}|Intelligence,@{intelligence_mod}|Wisdom,@{wisdom_mod}|Charisma,@{charisma_mod}|Luck,@{luck_mod}}">Query</option>
+																	<option value="@{pb}">PB</option>
+																	<option value="?{Attribute?|Strength,@{strength_mod}|Dexterity,@{dexterity_mod}|Constitution,@{constitution_mod}|Intelligence,@{intelligence_mod}|Wisdom,@{wisdom_mod}|Charisma,@{charisma_mod}|Luck,@{luck_mod}|PB,@{pb}}">Query</option>
 																</select>
 																<label>Mods:</label>
 																<input type="text" name="attr_tool_mod" title="@{tool_mod}" value="0">
@@ -6814,7 +6815,7 @@
 													<input type="text" name="attr_acrobatics_flat" placeholder="0" title="@{acrobatics_flat}">
 													<select name="attr_acrobatics_type" title="@{acrobatics_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -6822,7 +6823,7 @@
 													<input type="text" name="attr_investigation_flat" placeholder="0" title="@{investigation_flat}">
 													<select name="attr_investigation_type" title="@{investigation_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -6830,7 +6831,7 @@
 													<input type="text" name="attr_leadership_flat" placeholder="0" title="@{leadership_flat}">
 													<select name="attr_leadership_type" title="@{leadership_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -6838,7 +6839,7 @@
 													<input type="text" name="attr_medicine_flat" placeholder="0" title="@{medicine_flat}">
 													<select name="attr_medicine_type" title="@{medicine_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -6846,7 +6847,7 @@
 													<input type="text" name="attr_perception_flat" placeholder="0" title="@{perception_flat}">
 													<select name="attr_perception_type" title="@{perception_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -6854,7 +6855,7 @@
 													<input type="text" name="attr_physique_flat" placeholder="0" title="@{physique_flat}">
 													<select name="attr_physique_type" title="@{physique_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -6862,7 +6863,7 @@
 													<input type="text" name="attr_Religion_flat" placeholder="0" title="@{Religion_flat}">
 													<select name="attr_Religion_type" title="@{Religion_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -6870,7 +6871,7 @@
 													<input type="text" name="attr_speechcraft_flat" placeholder="0" title="@{speechcraft_flat}">
 													<select name="attr_speechcraft_type" title="@{speechcraft_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -6878,7 +6879,7 @@
 													<input type="text" name="attr_stealth_flat" placeholder="0" title="@{stealth_flat}">
 													<select name="attr_stealth_type" title="@{stealth_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -6886,7 +6887,7 @@
 													<input type="text" name="attr_arcana_flat" placeholder="0" title="@{arcana_flat}">
 													<select name="attr_arcana_type" title="@{arcana_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -6894,7 +6895,7 @@
 													<input type="text" name="attr_architecture_flat" placeholder="0" title="@{architecture_flat}">
 													<select name="attr_architecture_type" title="@{architecture_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -6902,7 +6903,7 @@
 													<input type="text" name="attr_astronomy_flat" placeholder="0" title="@{astronomy_flat}">
 													<select name="attr_astronomy_type" title="@{astronomy_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -6910,7 +6911,7 @@
 													<input type="text" name="attr_cosmology_flat" placeholder="0" title="@{cosmology_flat}">
 													<select name="attr_cosmology_type" title="@{cosmology_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -6918,7 +6919,7 @@
 													<input type="text" name="attr_courtier_flat" placeholder="0" title="@{courtier_flat}">
 													<select name="attr_courtier_type" title="@{courtier_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -6926,7 +6927,7 @@
 													<input type="text" name="attr_engineering_flat" placeholder="0" title="@{engineering_flat}">
 													<select name="attr_engineering_type" title="@{engineering_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -6934,7 +6935,7 @@
 													<input type="text" name="attr_geology_flat" placeholder="0" title="@{geology_flat}">
 													<select name="attr_geology_type" title="@{geology_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -6942,7 +6943,7 @@
 													<input type="text" name="attr_history_flat" placeholder="0" title="@{history_flat}">
 													<select name="attr_history_type" title="@{history_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -6950,7 +6951,7 @@
 													<input type="text" name="attr_law_flat" placeholder="0" title="@{law_flat}">
 													<select name="attr_law_type" title="@{law_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -6958,7 +6959,7 @@
 													<input type="text" name="attr_linguistics_flat" placeholder="0" title="@{linguistics_flat}">
 													<select name="attr_linguistics_type" title="@{linguistics_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -6966,7 +6967,7 @@
 													<input type="text" name="attr_mathematics_flat" placeholder="0" title="@{mathematics_flat}">
 													<select name="attr_mathematics_type" title="@{mathematics_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -6974,7 +6975,7 @@
 													<input type="text" name="attr_nature_flat" placeholder="0" title="@{nature_flat}">
 													<select name="attr_nature_type" title="@{nature_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -6982,7 +6983,7 @@
 													<input type="text" name="attr_agriculture_flat" placeholder="0" title="@{agriculture_flat}">
 													<select name="attr_agriculture_type" title="@{agriculture_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -6990,7 +6991,7 @@
 													<input type="text" name="attr_burglary_flat" placeholder="0" title="@{burglary_flat}">
 													<select name="attr_burglary_type" title="@{burglary_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -6998,7 +6999,7 @@
 													<input type="text" name="attr_cooking_flat" placeholder="0" title="@{cooking_flat}">
 													<select name="attr_cooking_type" title="@{cooking_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -7006,7 +7007,7 @@
 													<input type="text" name="attr_herbalism_flat" placeholder="0" title="@{herbalism_flat}">
 													<select name="attr_herbalism_type" title="@{herbalism_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -7014,7 +7015,7 @@
 													<input type="text" name="attr_sailor_flat" placeholder="0" title="@{sailor_flat}">
 													<select name="attr_sailor_type" title="@{sailor_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -7022,7 +7023,7 @@
 													<input type="text" name="attr_sleight_of_hand_flat" placeholder="0" title="@{sleight_of_hand_flat}">
 													<select name="attr_sleight_of_hand_type" title="@{sleight_of_hand_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -7030,7 +7031,7 @@
 													<input type="text" name="attr_survival_flat" placeholder="0" title="@{survival_flat}">
 													<select name="attr_survival_type" title="@{survival_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -7038,7 +7039,7 @@
 													<input type="text" name="attr_swimming_flat" placeholder="0" title="@{swimming_flat}">
 													<select name="attr_swimming_type" title="@{swimming_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
@@ -7046,7 +7047,7 @@
 													<input type="text" name="attr_underworld_flat" placeholder="0" title="@{underworld_flat}">
 													<select name="attr_underworld_type" title="@{underworld_type}">
 														<option value="1" selected="selected">Normal</option>
-														<option value="2">Expertise</option>
+														<option value="2">Double</option>
 													</select>
 												</div>
 												<div class="sheet-form-group">
