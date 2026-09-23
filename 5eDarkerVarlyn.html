@@ -6657,6 +6657,25 @@
 										</div>
 									</div>
 								</div>
+								<div class="sheet-container-panel sheet-pc-option-export">
+									<div class="sheet-container-header">Export</div>
+									<div class="sheet-container-body">
+										<div class="sheet-form sheet-form-borderless">
+											<div class="sheet-form-body">
+												<div class="sheet-form-group sheet-form-group-column">
+													<label>
+														<div class="sheet-form-group">
+															<button type="action" name="act_exportjson">Export character JSON</button>
+														</div>
+														JSON Output (select all &amp; copy)
+                            <span style="display: block; font-size: 0.85em; color: #999; margin-bottom: 5px;">Paste the JSON at https://dnd.rigo.nu/ResourcesTools/character-sheet-print.html</span>
+													</label>
+													<textarea name="attr_export_output" readonly placeholder="Click the button above to generate JSON..."></textarea>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
 								<div class="sheet-container-panel sheet-pc-option-attribute">
 									<div class="sheet-container-header">Attribute Options</div>
 									<div class="sheet-container-body">
@@ -7082,22 +7101,6 @@
 												<div class="sheet-form-group">
 													<label>Passive Perception Modifier:</label>
 													<input type="text" name="attr_passiveperceptionmod" placeholder="0" title="@{passiveperceptionmod}">
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="sheet-container-panel sheet-pc-option-export">
-									<div class="sheet-container-header">Export</div>
-									<div class="sheet-container-body">
-										<div class="sheet-form sheet-form-borderless">
-											<div class="sheet-form-body">
-												<div class="sheet-form-group">
-													<button type="action" name="act_exportjson">Export character JSON</button>
-												</div>
-												<div class="sheet-form-group sheet-form-group-column">
-													<label>JSON Output (select all &amp; copy)</label>
-													<textarea name="attr_export_output" readonly placeholder="Click the button above to generate JSON..."></textarea>
 												</div>
 											</div>
 										</div>

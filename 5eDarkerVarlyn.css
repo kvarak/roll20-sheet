@@ -3122,13 +3122,16 @@
  "class spell custom"
  "general attribute skill"
  "general save skill"
- "darker save skill";
+ "darker save skill"
+ "export export export";
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto auto auto auto 1fr; }
+  grid-template-rows: auto auto auto auto auto 1fr; }
 .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-options .sheet-pc-option-class {
   grid-area: class; }
 .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-options .sheet-pc-option-gdd {
-  grid-area: darker; }
+  grid-area: darker;
+  max-height: 300px;
+  overflow-y: auto; }
 .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-options .sheet-pc-option-multiclass {
   grid-area: multiclass; }
 .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-options .sheet-pc-option-spell {
@@ -3155,6 +3158,8 @@
   grid-area: general; }
 .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-options .sheet-pc-option-attribute {
   grid-area: attribute; }
+.charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-options .sheet-pc-option-export {
+  grid-area: export; }
 .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-options .sheet-pc-option-save {
   grid-area: save; }
 .charsheet .sheet-darkerdungeons .sheet-section-pc .sheet-tab-options .sheet-pc-option-skill {
